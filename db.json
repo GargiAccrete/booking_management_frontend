@@ -1,0 +1,127 @@
+{
+  "Category": [
+    {
+      "id": 1,
+      "name": "Fruits",
+      "description": "Fruits"
+    },
+    {
+      "id": 2,
+      "name": "Vegetables",
+      "description": "Vegetables"
+    },
+    {
+      "name": "breads",
+      "discription": "breads",
+      "id": 5
+    },
+    {
+      "name": "vediiii",
+      "discription": "gg",
+      "id": 6
+    }
+  ],
+  "Rate": [
+    {
+      "id": 1,
+      "rate": 1
+},
+    {
+      "rate": 4,
+      "id": 5
+    },
+    {
+      "rate": 3,
+      "id": 6
+    },
+    {
+      "id": 7
+    },
+    {
+      "rate": 4,
+      "id": 8
+    }
+  ],
+  "User": [
+    {
+      "id": 1,
+      "name": "pooja",
+      "email": "pooja@gmail.com"
+    },
+    {
+      "name": "Neeva",
+      "email": "Neeva@gmail.com",
+      "id": 2
+    },
+    {
+      "name": "hdhd",
+      "email": "mahadikpooja11@gmail.com",
+      "id": 3
+    },
+    {
+      "name": "ccbbbbbbb",
+      "email": "df@gmail.com",
+      "id": 4
+    },
+    {
+      "name": "ccc",
+      "email": "df@gmail.com",
+      "id": 5
+    },
+    {
+      "name": "ccff",
+      "email": "mahadikpooja11@gmail.com",
+      "id": 6
+    },
+    {
+      "name": "ccc",
+      "email": "df@gmail.com",
+      "id": 7
+    },
+    {
+      "id": 8
+    },
+    {
+      "id": 9
+    }
+  ],
+  "Products": [
+    {
+      "name": "shirts",
+      "discription": "ndxjc",
+      "prize": "100",
+      "qty": "450",
+      "id": 11
+    },
+    {
+      "name": "Dress",
+      "prize": "200",
+      "qty": "10",
+      "id": 12
+    },
+    {
+      "name": "Dress111",
+      "prize": "200",
+      "qty": "10",
+      "id": 13
+    },
+    {
+      "name": "tshirt",
+      "discription": "swd",
+      "qty": "30",
+      "id": 14
+    },
+    {
+      "name": "skirt",
+      "discription": "swd",
+      "qty": "30",
+      "id": 15
+    },
+    {
+      "name": "lehenga",
+      "discription": "swd",
+      "qty": "30",
+      "id": 16
+    }
+  ]
+}
