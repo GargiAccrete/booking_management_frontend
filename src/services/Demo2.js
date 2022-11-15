@@ -1,13 +1,29 @@
 import axios from 'axios'
 
 const AddData = (endpoint,data) =>  {
-    return axios.post(`http://localhost:3004/${endpoint}`,data).then(()=>{
-        console.log("data post" +data)
-    })
+    try {
+        // console.log(data);
+        let options = {
+
+            url : `http://localhost:3002/${endpoint}`,
+            data:data,
+            headers : {
+                'content-type': 'application/json',
+                'X-Req-Time': '1668509681',
+                'Access-Control-Allow-Origin': '*' 
+            },
+            method : 'post'
+        }
+        return axios(options).then(()=>{
+            console.log("data post" +data)
+        })
+    } catch (error) {
+        // console.log(error),'lllllllllllllllll';
+    }
 } 
 
 const FetchData =(endpoint,id='')=>{
-    return axios.get(`http://localhost:3004/${endpoint}/${id}`).then((result)=>{
+    return axios.get(`http://localhost:3002/${endpoint}/${id}`).then((result)=>{
         return result.data;
 
     })
@@ -16,7 +32,7 @@ const FetchData =(endpoint,id='')=>{
 const PutData = (endpoint,id,data) =>  {
     console.log("hoiiii")
     alert(id)
-    return axios.put(`http://localhost:3004/${endpoint}/${id}` ,data).then(()=>{
+    return axios.put(`http://localhost:3002/${endpoint}/${id}` ,data).then(()=>{
         
     })
 }
@@ -24,7 +40,7 @@ const PutData = (endpoint,id,data) =>  {
 
 const deleteData = (endpoint,id) =>{
     console.log(id)
-    return axios.delete(`http://localhost:3004/${endpoint}/${id}`).then((result)=>{
+    return axios.delete(`http://localhost:3002/${endpoint}/${id}`).then((result)=>{
         return result.data;
         console.log(result.data)
 })
