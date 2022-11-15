@@ -65,16 +65,14 @@ export default function Add_booking() {
   const history = useNavigate();
 
   let getonChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setaddtask({ ...addtask, [event.target.name]: event.target.value });
-    console.log(addtask);
+    // console.log(addtask);
   };
   let handleSubmit = (e) => {
     // alert("hiii");
-    // Demo2.AddData("Products", addtask).then(() => {
-    //   console.log("data");
-    // });
-    console.log("click");
+    Demo2.AddData("register/insert", addtask).then(() => {
+    });
     e.preventDefault();
     var data = {
       business_type: addtask.business_type,
@@ -88,26 +86,25 @@ export default function Add_booking() {
       business_area: addtask.business_area,
       contact_no: addtask.contact_no,
     };
-    const options = {
-      url: "http://localhost:3000/insert",
-      method: "POST",
-      data: data,
-      header: header,
-    };
-    axios(options)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    // const options = {
+    //   url: "http://localhost:3000/insert",
+    //   method: "POST",
+    //   data: data,
+    //   header: header,
+    // };
+    // axios(options)
+    //   .then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
     history("/");
   };
 
   let passData = () => {
     alert("hiii");
     Demo2.AddData("Products", addtask).then(() => {
-      console.log("data");
     });
     // Demo.AddData('Products').then((result)=>{
     //   console.log("data added")
