@@ -5,6 +5,8 @@ import PageNotFoundComponent from "../components/PageNotFoundComponent";
 import Add_booking from "../views/Add_booking";
 import View_booking   from "../views/View_booking";
 import Home from '../views/Home';
+import Login from "../views/Login";
+import LoginPage from "../views/LoginPage";
 // import LoginView from "../views/login/LoginView";
 // import DashboardView from "../views/dashboard/DashboardView";
 // import LogoutView from "../views/profile/LogoutView";
@@ -17,20 +19,22 @@ const AppRoutes = (props) => {
     <BrowserRouter>
      <Routes>
      <Route element={<Home/>} path='/'></Route>
+    {/* <Route element={<Login/>} path='/login'></Route> */}
+  
        <Route element={<Add_booking/>} path='/add_booking'></Route>
-       <Route element={<View_booking/>} path='/view_booking'></Route>
-      {/* <Route
+        <Route element={<View_booking/>} path='/view_booking'></Route>
+       {/* <Route
         path={RoutePaths.LOGIN}
         exact
         render={(props) => {
           if (isLoggedIn) {
             return <Redirect to={RoutePaths.DASHBOARD} />;
           } else {
-            return <LoginView {...props} updateLoggedIn={updateLoggedIn} />;
+            return <Bookinglist {...props} updateLoggedIn={updateLoggedIn} />;
           }
         }}
-      />
-      <Route
+      /> */}
+      {/* <Route
         path={RoutePaths.DASHBOARD}
         exact
         render={(props) => {
@@ -62,7 +66,7 @@ const AppRoutes = (props) => {
             return <Redirect to={RoutePaths.LOGIN} />;
           }
         }}
-      /> */}
+      /> */} 
       <Route
         path="*"
         

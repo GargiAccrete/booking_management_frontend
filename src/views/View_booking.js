@@ -7,7 +7,7 @@ import Sidebar from '../components/Sidebar';
 import Table from 'react-bootstrap/Table'
 
 
-export default function View_product() {
+export default function View_booking() {
   useEffect(() => {
     ReadBooking();
     }, [])
