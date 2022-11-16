@@ -3,9 +3,7 @@ import "../Assets/login.css";
 import dining from "../Assets/image/dining.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import Demo2 from "../services/Demo2";
 import Footer from "../components/Footer";
 
 export default function Login() {
@@ -23,15 +21,8 @@ export default function Login() {
     var data = {
         'name': name,
         'contact': contact,
-        
       }
-      const options = {
-        url: 'http://localhost:3002/login',
-        method: "POST",
-        data: data,
-        header: header,
-      }
-    axios(options).then((response) => {
+    Demo2.login('/login',data).then((response) => {
     console.log("successfully login",response)
       }).catch(e =>{
         console.log(e)

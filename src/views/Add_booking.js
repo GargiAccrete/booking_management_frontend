@@ -29,18 +29,6 @@ const header = {
   "Content-type": "application/json",
 };
 
-// const StyledTextField = styled(TextField)(() => ({
-//   marginTop: "3px",
-//   ".MuiOutlinedInput-root": {
-//       borderRadius: "10px",
-//       height: "33px",
-//       paddingTop: "0px",
-
-//   },
-//   ".MuiOutlinedInput-input": {
-//       fontSize: "13px",
-//   },
-// }));
 const StyledTextField = styled(TextField)(() => ({
   marginTop: "3px",
   ".MuiOutlinedInput-root": {
@@ -70,14 +58,11 @@ export default function Add_booking() {
     // console.log(addtask);
   };
   let handleSubmit = (e) => {
-    // alert("hiii");
-    Demo2.AddData("register/insert", addtask).then(() => {
-    });
     e.preventDefault();
     var data = {
       business_type: addtask.business_type,
       legal_name: addtask.legal_name,
-      brand_associate: addtask.brand_associate,
+      brand_associate: addtask.optradio,
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: addtask.city,
@@ -86,19 +71,8 @@ export default function Add_booking() {
       business_area: addtask.business_area,
       contact_no: addtask.contact_no,
     };
-    // const options = {
-    //   url: "http://localhost:3000/insert",
-    //   method: "POST",
-    //   data: data,
-    //   header: header,
-    // };
-    // axios(options)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    Demo2.AddData("register/insert", data).then(() => {
+    });
     history("/");
   };
 
@@ -132,19 +106,19 @@ export default function Add_booking() {
               </StyledFormLabel>
               <StyledTextField
                 placeholder="select"
-                defaultValue="Ltd"
                 name="business_type"
                 value={addtask.business_type}
+                onChange={getonChange}
                 fullWidth
                 select
               >
-                <MenuItem key="1" value="1">
+                <MenuItem key="Ltd" value="Ltd">
                   Ltd
                 </MenuItem>
-                <MenuItem key="2" value="2">
+                <MenuItem key="Pvt" value="Pvt">
                   Pvt
                 </MenuItem>
-                <MenuItem key="3" value="3">
+                <MenuItem key="Llp" value="Llp">
                   Llp
                 </MenuItem>
               </StyledTextField>
@@ -158,8 +132,9 @@ export default function Add_booking() {
             <div style={{ display: "flex" }}>
               <input
                 type="radio"
-                id="male"
+                id="yes"
                 name="optradio"
+                onChange={getonChange}
                 value="yes"
                 style={{ width: "20px" }}
               />
@@ -173,12 +148,13 @@ export default function Add_booking() {
                {" "}
               <input
                 type="radio"
-                id="female"
+                id="no"
                 name="optradio"
                 value="No"
+                onChange={getonChange}
                 style={{ width: "20px" }}
               />
-                <label for="female">No</label>
+                <label for="No">No</label>
             </div>
           </div>
         </div>
@@ -218,8 +194,7 @@ export default function Add_booking() {
               placeholder="address_line_2"
               value={addtask.address_line_2}
               name="address_line_2"
-              onChange={getonChange}
-              required
+             required
             />
           </div>
           <div class="col">
@@ -284,7 +259,7 @@ export default function Add_booking() {
               class="form-control"
               placeholder="contact_no"
               value={addtask.contact_no}
-              name="	contact_no"
+              name="contact_no"
               onChange={getonChange}
               required
             />

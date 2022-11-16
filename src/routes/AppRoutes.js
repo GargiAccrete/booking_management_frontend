@@ -19,55 +19,10 @@ const AppRoutes = (props) => {
     <BrowserRouter>
      <Routes>
      <Route element={<Home/>} path='/'></Route>
-    {/* <Route element={<Login/>} path='/login'></Route> */}
-  
-       <Route element={<Add_booking/>} path='/add_booking'></Route>
-        <Route element={<View_booking/>} path='/view_booking'></Route>
-       {/* <Route
-        path={RoutePaths.LOGIN}
-        exact
-        render={(props) => {
-          if (isLoggedIn) {
-            return <Redirect to={RoutePaths.DASHBOARD} />;
-          } else {
-            return <Bookinglist {...props} updateLoggedIn={updateLoggedIn} />;
-          }
-        }}
-      /> */}
-      {/* <Route
-        path={RoutePaths.DASHBOARD}
-        exact
-        render={(props) => {
-          if (isLoggedIn) {
-            return <DashboardView {...props} />;
-          } else {
-            return <Redirect to={RoutePaths.LOGIN} />;
-          }
-        }}
-      />
-      <Route
-        path={RoutePaths.PROFILE}
-        exact
-        render={(props) => {
-          if (isLoggedIn) {
-            return <ProfileView {...props} />;
-          } else {
-            return <Redirect to={RoutePaths.LOGIN} />;
-          }
-        }}
-      />
-      <Route
-        path={RoutePaths.LOGOUT}
-        exact
-        render={(props) => {
-          if (isLoggedIn) {
-            return <LogoutView {...props} updateLoggedIn={updateLoggedIn} />;
-          } else {
-            return <Redirect to={RoutePaths.LOGIN} />;
-          }
-        }}
-      /> */} 
-      <Route
+     <Route element={<Login/>} path='/login'></Route> 
+     <Route element={<Add_booking/>} path='/add_booking'></Route>
+     <Route element={<View_booking/>} path='/view_booking'></Route>
+     <Route
         path="*"
         
         render={(props) => {
