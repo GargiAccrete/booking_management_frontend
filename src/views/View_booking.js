@@ -2,30 +2,42 @@ import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import Demo2 from "../services/Demo2";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useLocation} from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {Link} from "react-router-dom";
 
 export default function View_product() {
   let navigate = useNavigate();
+  
 
   const [data, setdata] = useState([]);
   let getData = () => {
     Demo2.FetchData("register/list").then((result) => {
       setdata(result.data);
+      toast("listed Successfully!");
       console.log(data);
     });
   };
 
   let updateData = (id) => {
     console.log("id is" + id);
-    navigate(`/update_product/${id}`);
+    navigate(`/edit_booking/${id}`);
   };
+  let viewSingleData=(id)=>{
+    console.log("id is" + id);
+    navigate(`/view_single_detail/${id}`);
+  }
   let deletedata = (id) => {
     console.log(id);
     Demo2.deleteData(`register/${id}/delete`).then(() => {
-      console.log("Data deleted");
+      toast("Deleted Successfully!");
+   
+     });
+    setTimeout(() => {
       getData();
-    });
+    }, 4000);
   };
   useEffect(() => {
     //onload
@@ -70,15 +82,30 @@ export default function View_product() {
               <td>{item.city}</td>
               <td>{item.brand_associate}</td>
               <td style={{ paddingRight: "90px" }}>
+                <button className="btn btn-warning" style={{ margin: "10px" }}  onClick={()=>viewSingleData(item.id)} >
+                  View
+                </button>
                 <button className="btn btn-danger" style={{ margin: "10px" }} onClick={()=>deletedata(item.id)}>
                   Delete
                 </button>
-                <button className="btn btn-info">Update</button>
+                <button className="btn btn-info" style={{ margin: "10px" }}  onClick={()=>updateData(item.id)} >
+                  Edit
+                </button>
+                {/* <button
+               className="btn btn-info"
+               onClick={() => history.push(`/edit_booking/${item.id}`)}>
+                 {" "} Edit
+                 </button> */}
+                {/* <Link to={`/edit_booking/${item.id}`}>
+                Edit
+                </Link> */}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+      <ToastContainer />
     </div>
+   
   );
 }

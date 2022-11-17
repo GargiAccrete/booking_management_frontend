@@ -20,3 +20,13 @@ margin-right: 628px;
     background: #ffffff;
     border: 10px solid #f2f2f2;
   }
+  select {
+    width: 500px;
+   border-radius: 2px;
+    border-color: lightgrey;
+   height: 37px;
+    margin-top: -4px;
+}
+option {
+    min-width: 500px;
+}
