@@ -22,7 +22,9 @@ export default function Login() {
         'name': name,
         'contact': contact,
       }
-    Demo2.login('/login',data).then((response) => {
+    Demo2.login('login/login',data).then((response) => {
+      localStorage.setItem('name', name);
+      localStorage.setItem('contact', contact);
     console.log("successfully login",response)
       }).catch(e =>{
         console.log(e)
@@ -100,7 +102,18 @@ export default function Login() {
                           class="btn btn-primary btn-block mb-4"
                         >
                           Sign in
+                       
                         </button>
+                        {localStorage.getItem('name') && (
+                          <div>
+                            Name: <p>{localStorage.getItem('name')}</p>
+                          </div>
+                        )}
+                        {localStorage.getItem('contact') && (
+                          <div>
+                            ContactSS: <p>{localStorage.getItem('contact')}</p>
+                          </div>
+                        )}
                       </form>
                       <Footer />
                     </div>

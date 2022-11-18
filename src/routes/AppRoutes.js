@@ -20,12 +20,26 @@ const AppRoutes = (props) => {
   return (
     <BrowserRouter>
      <Routes>
-     <Route element={<Home/>} path='/'></Route>
+     {
+      (localStorage.getItem("name") && localStorage.getItem("contact"))?
+      <>
+       <Route element={<Home/>} path='/'></Route>
+       <Route path='/add_booking' element={<Add_booking/>}></Route>  
+     <Route element={<View_booking/>} path='/view_booking'></Route>
+     <Route element={<View_single_detail/>} path='/view_single_detail/:id'></Route>
+     <Route element={<Edit_booking/>} path='/edit_booking/:id'></Route>
+      </>
+      :
+      <>
+       <Route element={<Login/>} path='/login'></Route> 
+      </>
+     }
+     {/* <Route element={<Home/>} path='/'></Route>
      <Route element={<Login/>} path='/login'></Route> 
      <Route element={<Add_booking/>} path='/add_booking'></Route>
      <Route element={<View_booking/>} path='/view_booking'></Route>
      <Route element={<View_single_detail/>} path='/view_single_detail/:id'></Route>
-     <Route element={<Edit_booking/>} path='/edit_booking/:id'></Route>
+     <Route element={<Edit_booking/>} path='/edit_booking/:id'></Route> */}
      
      <Route
         path="*"

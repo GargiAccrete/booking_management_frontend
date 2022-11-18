@@ -43,6 +43,11 @@ export default function View_product() {
     //onload
     getData();
   }, []);
+  const logout=()=>{
+    localStorage.removeItem('name');
+    localStorage.removeItem('contact');
+    window.open("/login")
+}
 
   return (
     <div>
@@ -53,6 +58,15 @@ export default function View_product() {
         </h4>
       </div>
       <div>
+      <button
+          className="btn btn-danger"
+          onClick={logout}
+          style={{ float: "right", margin: "20px" }}
+        >
+          {" "}
+          Logout
+        </button>
+
         <button
           className="btn btn-primary"
           onClick={() => window.open("/add_booking")}
