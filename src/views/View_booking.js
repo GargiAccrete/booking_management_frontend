@@ -1,133 +1,125 @@
-import React,{useEffect, useState} from 'react';
-import axios from 'axios';
-import {Link,useNavigate} from "react-router-dom";
-import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
-import Table from 'react-bootstrap/Table'
-
+import React, { useState, useEffect } from "react";
+import Table from "react-bootstrap/Table";
+import Demo2 from "../services/Demo2";
+import Navbar from "../components/Navbar";
+import { useNavigate ,useLocation} from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {Link} from "react-router-dom";
 
 export default function View_product() {
-  useEffect(() => {
-    ReadBooking();
-    }, [])
   let navigate = useNavigate();
-const [data, setdata] = useState([]);
-const header={"Access-Control-Allow-Origin":"*", "Content-type": "application/json"}
-const ReadBooking=()=>{
-    const options = {
-        url: 'http://localhost:3000/user_list',
-        method: "GET",
-        // data: userData,
-        header: header,
-      }
-      axios(options).then((res)=>{
-        console.log("first",res.data.userData)
-        setdata(res.data.userData)
-      }).catch(e=>{
-        console.log("error",e)
+  
 
-      })
-      // setUsers(response)
-}
-const OnDeleteUser=async(id)=>{
-  const response= await axios.get(`http://localhost:3000/delete/${id}`)
-  if(response.status===200){
-    console.log("deleted successfully")
+  const [data, setdata] = useState([]);
+  let getData = () => {
+    Demo2.FetchData("register/list").then((result) => {
+      setdata(result.data);
+      toast("listed Successfully!");
+      console.log(data);
+    });
+  };
+
+  let updateData = (id) => {
+    console.log("id is" + id);
+    navigate(`/edit_booking/${id}`);
+  };
+  let viewSingleData=(id)=>{
+    console.log("id is" + id);
+    navigate(`/view_single_detail/${id}`);
   }
-
+  let deletedata = (id) => {
+    console.log(id);
+    Demo2.deleteData(`register/${id}/delete`).then(() => {
+      toast("Deleted Successfully!");
+   
+     });
+    setTimeout(() => {
+      getData();
+    }, 4000);
+  };
+  useEffect(() => {
+    //onload
+    getData();
+  }, []);
+  const logout=()=>{
+    localStorage.removeItem('name');
+    localStorage.removeItem('contact');
+    window.open("/login")
 }
-  // let getData = () => {
-  //   Demo2.FetchData("Products").then((result) => {
-  //     setdata([...result]);
-  //     console.log(data);
-  //   });
-
-  //   // Api.getData('task').then((result)=>{
-  //   //     settask([...result])
-  //   //     console.log(task)
-  // };
-
-  // let updateData = (id) => {
-  //   console.log("id is" + id);
-  //   navigate(`/update_product/${id}`);
-  // };
-  // let deletedata = (id) => {
-  //   console.log(id);
-  //   Demo2.deleteData("Products", id).then(() => {
-  //     console.log("Data deleted");
-  //     getData();
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   //onload
-  //   getData();
-  // }, []);
 
   return (
     <div>
-      <div>
-      <Navbar />
-      <Sidebar/>
-      <div style={{display:"flex",marginBottom:"20px"}}>
-      <h4 style={{marginLeft:"241px"}}> View Booking |<small>View booking</small></h4>
-      <div>
-        <Link to="/Add_booking">
-          <button
-            className="btn btn-primary"
-            style={{ float: "right"}}
-          >
-            {" "}
-            Add Booking
-          </button>
-        </Link>
-      </div>
-      </div>
+      <Sidebar />
+      <div >
+      <h4 >
+        List  Booking |<small>List booking</small>
+        </h4>
       </div>
       <div>
-      <Table striped bordered>
+      <button
+          className="btn btn-danger"
+          onClick={logout}
+          style={{ float: "right", margin: "20px" }}
+        >
+          {" "}
+          Logout
+        </button>
+
+        <button
+          className="btn btn-primary"
+          onClick={() => window.open("/add_booking")}
+          style={{ float: "right", margin: "20px" }}
+        >
+          {" "}
+          Add Booking
+        </button>
+      </div>
+      <Table striped bordered hover style={{ marginLeft: "200px" }}>
         <thead>
           <tr>
-            <th style={{paddingLeft:"195px"}}>Id</th>
-            <th>Legal Name</th>
+            <th>Id</th>
+            <th>legal_name</th>
             <th>State</th>
-            <th>City</th>
-            <th>Business Area</th>
-            <th>Contact No</th>
+            <th>city</th>
+            <th>Brand Associate</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr>
-              <td style={{paddingLeft:"195px"}}>{item.id}</td>
+              <td>{item.id}</td>
               <td>{item.legal_name}</td>
               <td>{item.state}</td>
               <td>{item.city}</td>
-              <td>{item.business_area}</td>
-              <td>{item.contact_no}</td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  // onClick={() => deletedata(item.id)}
-                  style={{ margin: "10px" }}
-                >
+              <td>{item.brand_associate}</td>
+              <td style={{ paddingRight: "90px" }}>
+                <button className="btn btn-warning" style={{ margin: "10px" }}  onClick={()=>viewSingleData(item.id)} >
+                  View
+                </button>
+                <button className="btn btn-danger" style={{ margin: "10px" }} onClick={()=>deletedata(item.id)}>
                   Delete
                 </button>
-
-                <button
-                  className="btn btn-info"
-                  // onClick={() => updateData(item.id)}
-                >
-                  Update
+                <button className="btn btn-info" style={{ margin: "10px" }}  onClick={()=>updateData(item.id)} >
+                  Edit
                 </button>
+                {/* <button
+               className="btn btn-info"
+               onClick={() => history.push(`/edit_booking/${item.id}`)}>
+                 {" "} Edit
+                 </button> */}
+                {/* <Link to={`/edit_booking/${item.id}`}>
+                Edit
+                </Link> */}
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-      </div>
+      <ToastContainer />
     </div>
+   
   );
 }

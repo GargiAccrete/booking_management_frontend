@@ -6,41 +6,15 @@ import Demo2 from "../services/Demo2";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { styled } from "@mui/material/styles";
-
-import {
-  Paper,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableContainer,
-  Card,
-  TextField,
-  FormLabel,
-  MenuItem,
-  Grid,
-  Button,
-  Typography,
-} from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {TextField,FormLabel,MenuItem,Grid} from "@mui/material";
 
 const header = {
   "Access-Control-Allow-Origin": "*",
   "Content-type": "application/json",
 };
 
-// const StyledTextField = styled(TextField)(() => ({
-//   marginTop: "3px",
-//   ".MuiOutlinedInput-root": {
-//       borderRadius: "10px",
-//       height: "33px",
-//       paddingTop: "0px",
-
-//   },
-//   ".MuiOutlinedInput-input": {
-//       fontSize: "13px",
-//   },
-// }));
 const StyledTextField = styled(TextField)(() => ({
   marginTop: "3px",
   ".MuiOutlinedInput-root": {
@@ -62,52 +36,47 @@ const StyledFormLabel = styled(FormLabel)(() => ({
 
 export default function Add_booking() {
   const [addtask, setaddtask] = useState({});
+  const [brand, setBrand] = useState("");
   const history = useNavigate();
 
+  const houses = [
+    {value: 'ParathaHouse',    text: 'ParathaHouse'   },
+    {value: 'BiryaniHouse', text: 'BiryaniHouse'},
+    {value: 'Snacks',   text: 'Snacks'  },
+    {value: 'VadapavFactory',   text: 'VadapavFactory'  }
+];
+
   let getonChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setaddtask({ ...addtask, [event.target.name]: event.target.value });
-    console.log(addtask);
+    // console.log(addtask);
   };
   let handleSubmit = (e) => {
-    // alert("hiii");
-    // Demo2.AddData("Products", addtask).then(() => {
-    //   console.log("data");
-    // });
-    console.log("click");
     e.preventDefault();
     var data = {
       business_type: addtask.business_type,
       legal_name: addtask.legal_name,
-      brand_associate: addtask.brand_associate,
+      business_area: brand||"pppp",
+      brand_associate: addtask.optradio||"No",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: addtask.city,
       state: addtask.state,
       pincode: addtask.pincode,
-      business_area: addtask.business_area,
       contact_no: addtask.contact_no,
     };
-    const options = {
-      url: "http://localhost:3000/insert",
-      method: "POST",
-      data: data,
-      header: header,
-    };
-    axios(options)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    history("/");
+    Demo2.AddData("register/insert", data).then(() => {
+      toast("successfully inserted")
+    });
+    setTimeout(() => {
+      history("/view_booking");
+    }, 4000);
+   
   };
 
   let passData = () => {
     alert("hiii");
     Demo2.AddData("Products", addtask).then(() => {
-      console.log("data");
     });
     // Demo.AddData('Products').then((result)=>{
     //   console.log("data added")
@@ -118,9 +87,7 @@ export default function Add_booking() {
   return (
     <div>
       <div>
-        <Navbar />
-        <Sidebar />
-
+       <Sidebar />
         <h4>
           Booking |<small>add booking</small>
         </h4>
@@ -135,34 +102,37 @@ export default function Add_booking() {
               </StyledFormLabel>
               <StyledTextField
                 placeholder="select"
-                defaultValue="Ltd"
                 name="business_type"
                 value={addtask.business_type}
+                onChange={getonChange}
                 fullWidth
                 select
               >
-                <MenuItem key="1" value="1">
+                <MenuItem key="Ltd" value="Ltd">
                   Ltd
                 </MenuItem>
-                <MenuItem key="2" value="2">
+                <MenuItem key="Pvt" value="Pvt">
                   Pvt
                 </MenuItem>
-                <MenuItem key="3" value="3">
+                <MenuItem key="Llp" value="Llp">
                   Llp
                 </MenuItem>
               </StyledTextField>
             </Grid>
           </div>
-          <div class="col">
-            <StyledFormLabel htmlFor="country">
+          <div class="col" style={{display:"flex"}}>
+            <StyledFormLabel htmlFor="country" style={{margin:"33px"}}>
               {" "}
-              Brand Associate{" "}
+              Brand Associate :{" "}
             </StyledFormLabel>
             <div style={{ display: "flex" }}>
-              <input
-                type="radio"
-                id="male"
+            <input name="optradio" type="hidden" value="No"/>
+            <input name="optradio" type="checkbox" value="yes"    onChange={getonChange}/>
+              {/* <input
+                type="checkbox"
+                id="yes"
                 name="optradio"
+                onChange={getonChange}
                 value="yes"
                 style={{ width: "20px" }}
               />
@@ -175,13 +145,14 @@ export default function Add_booking() {
               </label>
                {" "}
               <input
-                type="radio"
-                id="female"
+                type="checkbox"
+                id="no"
                 name="optradio"
                 value="No"
+                onChange={getonChange}
                 style={{ width: "20px" }}
               />
-                <label for="female">No</label>
+                <label for="No">No</label> */}
             </div>
           </div>
         </div>
@@ -221,8 +192,7 @@ export default function Add_booking() {
               placeholder="address_line_2"
               value={addtask.address_line_2}
               name="address_line_2"
-              onChange={getonChange}
-              required
+             required
             />
           </div>
           <div class="col">
@@ -266,38 +236,38 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country">
+          <StyledFormLabel htmlFor="country">
               {" "}
-              Busineess Area:{" "}
+              Brand Area:{" "}
             </StyledFormLabel>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="business_area"
-              value={addtask.business_area}
-              name="business_area"
-              onChange={getonChange}
-              required
-            />
+            <select onChange={(event) => setBrand(event.target.value)}  value={brand}>
+              <option>---------Select Menu-------</option>
+                {houses.map(item => {
+                   return (<option key={item.value} value={item.value}>{item.text}</option>);
+                })}
+          </select>
           </div>
-          <div class="col">
+        
+            <div class="col">
             <StyledFormLabel htmlFor="country"> Contact No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
               placeholder="contact_no"
               value={addtask.contact_no}
-              name="	contact_no"
+              name="contact_no"
               onChange={getonChange}
               required
             />
           </div>
-        </div>
-
+      
+</div>
+      
         <button type="submit" class="btn btn-primary">
           Submit
         </button>
       </form>
+      <ToastContainer/>
     </div>
   );
 }
