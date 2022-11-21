@@ -37,6 +37,9 @@ const StyledFormLabel = styled(FormLabel)(() => ({
 export default function Add_booking() {
   const [addtask, setaddtask] = useState({});
   const [brand, setBrand] = useState("");
+  const [stateid, setStateId] = useState("");
+  const [state, setState] = useState([]);
+  const [city, setCity] = useState([])
   const history = useNavigate();
 
   const houses = [
@@ -51,6 +54,27 @@ export default function Add_booking() {
     setaddtask({ ...addtask, [event.target.name]: event.target.value });
     // console.log(addtask);
   };
+  useEffect(() => {
+    getState();
+    getCity();
+  })
+  const getState = async () => {
+    const res = await axios.get("");
+    const getst = await res.json();
+    setState(getst)
+  }
+  const getCity = async () => {
+    const rescity = await axios.get(``);
+    const getci = await rescity.json();
+    setCity(getci)
+
+  }
+  const handleState = (event) => {
+    const getstateId = event.target.value;
+    console.log("__", getstateId)
+    setStateId(getstateId)
+
+  }
   let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
@@ -207,6 +231,15 @@ export default function Add_booking() {
               required
             />
           </div>
+            {/* <div class="col">
+            <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
+            <select onChange={(event) => handleState(event)} >
+              <option>---------Select State-------</option>
+              {state.map(item => {
+                return (<option key={item.id} value={item.id}>{item.state_name}</option>);
+              })}
+            </select>
+          </div> */}
         </div>
         <div class="row">
           <div class="col">
@@ -221,6 +254,15 @@ export default function Add_booking() {
               required
             />
           </div>
+          {/* <div class="col">
+            <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
+            <select>
+              <option>---------Select City-------</option>
+              {city.map(item => {
+                return (<option key={item.id} value={item.id}>{item.city_name}</option>);
+              })}
+            </select>
+          </div> */}
           <div class="col">
             <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
             <input

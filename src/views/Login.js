@@ -13,10 +13,10 @@ export default function Login() {
     "Access-Control-Allow-Origin": "*",
     "Content-type": "application/json",
   };
-  const history = useNavigate();
+  let navigate = useNavigate();
 
   const handleSubmit=(e) =>{
-    console.log("click")
+   
     e.preventDefault();
     var data = {
         'name': name,
@@ -25,11 +25,14 @@ export default function Login() {
     Demo2.login('login/login',data).then((response) => {
       localStorage.setItem('name', name);
       localStorage.setItem('contact', contact);
+      setTimeout(()=>{
+        navigate("/")
+      })
     console.log("successfully login",response)
       }).catch(e =>{
         console.log(e)
       })
-   history("/")
+    
 }
 
   return (
