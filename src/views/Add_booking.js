@@ -37,16 +37,13 @@ const StyledFormLabel = styled(FormLabel)(() => ({
 export default function Add_booking() {
   const [addtask, setaddtask] = useState({});
   const [brand, setBrand] = useState("");
-  const [stateid, setStateId] = useState("");
-  const [state, setState] = useState([]);
-  const [city, setCity] = useState([])
   const history = useNavigate();
 
   const houses = [
-    {value: 'ParathaHouse',    text: 'ParathaHouse'   },
-    {value: 'BiryaniHouse', text: 'BiryaniHouse'},
-    {value: 'Snacks',   text: 'Snacks'  },
-    {value: 'VadapavFactory',   text: 'VadapavFactory'  }
+    {value: '1',    text: 'ParathaHouse'   },
+    {value: '2', text: 'BiryaniHouse'},
+    {value: '3',   text: 'Snacks'  },
+    {value: '4',   text: 'VadapavFactory'  }
 ];
 
   let getonChange = (event) => {
@@ -54,34 +51,14 @@ export default function Add_booking() {
     setaddtask({ ...addtask, [event.target.name]: event.target.value });
     // console.log(addtask);
   };
-  useEffect(() => {
-    getState();
-    getCity();
-  })
-  const getState = async () => {
-    const res = await axios.get("");
-    const getst = await res.json();
-    setState(getst)
-  }
-  const getCity = async () => {
-    const rescity = await axios.get(``);
-    const getci = await rescity.json();
-    setCity(getci)
 
-  }
-  const handleState = (event) => {
-    const getstateId = event.target.value;
-    console.log("__", getstateId)
-    setStateId(getstateId)
-
-  }
   let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
       business_type: addtask.business_type,
       legal_name: addtask.legal_name,
       business_area: brand||"pppp",
-      brand_associate: addtask.optradio||"No",
+      brand_associate: addtask.optradio||"false",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: addtask.city,
@@ -116,8 +93,7 @@ export default function Add_booking() {
           Booking |<small>add booking</small>
         </h4>
       </div>
-
-      <form onSubmit={handleSubmit}>
+ <form onSubmit={handleSubmit}>
         <div class="row">
           <div class="col">
             <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
@@ -132,13 +108,13 @@ export default function Add_booking() {
                 fullWidth
                 select
               >
-                <MenuItem key="Ltd" value="Ltd">
+                <MenuItem key="Ltd" value="1">
                   Ltd
                 </MenuItem>
-                <MenuItem key="Pvt" value="Pvt">
+                <MenuItem key="Pvt" value="2">
                   Pvt
                 </MenuItem>
-                <MenuItem key="Llp" value="Llp">
+                <MenuItem key="Llp" value="3">
                   Llp
                 </MenuItem>
               </StyledTextField>
@@ -150,8 +126,8 @@ export default function Add_booking() {
               Brand Associate :{" "}
             </StyledFormLabel>
             <div style={{ display: "flex" }}>
-            <input name="optradio" type="hidden" value="No"/>
-            <input name="optradio" type="checkbox" value="yes"    onChange={getonChange}/>
+            <input name="optradio" type="hidden" value="false"/>
+            <input name="optradio" type="checkbox" value="true"    onChange={getonChange}/>
               {/* <input
                 type="checkbox"
                 id="yes"
@@ -231,15 +207,7 @@ export default function Add_booking() {
               required
             />
           </div>
-            {/* <div class="col">
-            <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
-            <select onChange={(event) => handleState(event)} >
-              <option>---------Select State-------</option>
-              {state.map(item => {
-                return (<option key={item.id} value={item.id}>{item.state_name}</option>);
-              })}
-            </select>
-          </div> */}
+           
         </div>
         <div class="row">
           <div class="col">
@@ -254,15 +222,7 @@ export default function Add_booking() {
               required
             />
           </div>
-          {/* <div class="col">
-            <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-            <select>
-              <option>---------Select City-------</option>
-              {city.map(item => {
-                return (<option key={item.id} value={item.id}>{item.city_name}</option>);
-              })}
-            </select>
-          </div> */}
+         
           <div class="col">
             <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
             <input

@@ -2,7 +2,7 @@ import React from "react";
 import "../Assets/login.css";
 import dining from "../Assets/image/dining.jpg";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import Demo2 from "../services/Demo2";
 import Footer from "../components/Footer";
 
@@ -13,11 +13,10 @@ export default function Login() {
     "Access-Control-Allow-Origin": "*",
     "Content-type": "application/json",
   };
-  let navigate = useNavigate();
+  let Navigate = useNavigate();
 
   const handleSubmit=(e) =>{
-   
-    e.preventDefault();
+   e.preventDefault();
     var data = {
         'name': name,
         'contact': contact,
@@ -25,10 +24,11 @@ export default function Login() {
     Demo2.login('login/login',data).then((response) => {
       localStorage.setItem('name', name);
       localStorage.setItem('contact', contact);
-      setTimeout(()=>{
-        navigate("/")
-      })
-    console.log("successfully login",response)
+      window.open("/view_booking")
+      // setTimeout(()=>{
+      //   Navigate("/home")
+      // })
+      // return Navigate(from, { replace: true })
       }).catch(e =>{
         console.log(e)
       })
