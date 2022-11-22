@@ -58,6 +58,9 @@ export default function View_product() {
         </h4>
       </div>
       <div>
+        
+      </div>
+      <div>
       <button
           className="btn btn-danger"
           onClick={logout}

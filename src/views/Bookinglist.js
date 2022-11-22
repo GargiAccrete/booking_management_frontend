@@ -19,7 +19,6 @@ const columns = [
       field: "name",
       headerName: "Name",
       minWidth: 150,
-     
     },
     { field: "legal_name", headerName: "State", minWidth: 150 },
     { field: "lastvisit", headerName: "Last Visit", minWidth: 150 },

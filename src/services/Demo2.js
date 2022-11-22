@@ -14,6 +14,7 @@ const AddData = (endpoint,data) =>  {
             },
             method : 'post'
         }
+        console.log('options',options);
         return axios(options).then(()=>{
             console.log("data post" +data)
         })

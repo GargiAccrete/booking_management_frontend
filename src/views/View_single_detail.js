@@ -27,7 +27,6 @@ const StyledTextField = styled(TextField)(() => ({
     fontSize: "13px",
   }));
   
-
 function View_single_detail() {
     useEffect(() => {
       getData();
