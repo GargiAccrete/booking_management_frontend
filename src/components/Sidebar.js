@@ -31,8 +31,22 @@ export default function Sidebar() {
         <hr class="sidebar-divider" />
 
         <div class="sidebar-heading">Interface</div>
+        
 
         <li class="nav-item">
+        <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseTwo"
+            aria-expanded="true"
+            aria-controls="collapseTwo"
+          >
+            <Link to="/View_admin" style={{ color: "White" }}>
+              Admin
+            </Link>
+            {/* <span>Products</span> */}
+          </a>
           <a
             class="nav-link collapsed"
             href="#"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import Demo2 from "../services/Demo2";
+import AdminService from "../services/AdminService";
 import Navbar from "../components/Navbar";
 import { useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -64,62 +64,59 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function View_booking() {
-  let navigate = useNavigate();
-  const [data, setdata] = useState([]);
-  const [search, setSearch] = useState("")
-  let getData = async (search) => {
-    console.log("inside function", search)
-    Demo2.FetchData(`register/list?search=${search}`).then((result) => {
-      console.log("result", result)
-      setdata(result.data);
-    
-      // toast("listed Successfully!");
-      // console.log(data);
-    });
-    
-  };
- 
 
-  let updateData = (id) => {
-    console.log("id is" + id);
-    navigate(`/edit_booking/${id}`);
-  };
-  let viewSingleData = (id) => {
-    console.log("id is" + id);
-    navigate(`/view_single_detail/${id}`);
-  }
-  let deletedata = (id) => {
-    console.log(id);
-    Demo2.deleteData(`register/${id}/delete`).then(() => {
-      toast("Deleted Successfully!");
-
-    });
-    setTimeout(() => {
+function View_admin() {
+    let navigate = useNavigate();
+    const [admin, setAdmin] = useState([]);
+    const [search, setSearch] = useState("")
+    let getData = async () => {
+      console.log("inside function")
+      AdminService.FetchData(`adminUser/list`).then((result) => {
+        console.log("result", result)
+        setAdmin(result.data);
+      
+        // toast("listed Successfully!");
+        // console.log(data);
+      });
+      
+    };
+   
+  
+    let updateData = (id) => {
+      console.log("id is" + id);
+      navigate(`/edit_admin/${id}`);
+    };
+    let viewSingleData = (id) => {
+      console.log("id is" + id);
+      navigate(`/view_admin_detail/${id}`);
+    }
+    let deletedata = (id) => {
+      console.log(id);
+      AdminService.deleteData(`adminUser/${id}/delete`).then(() => {
+        toast("Deleted Successfully!");
+  
+      });
+      setTimeout(() => {
+        getData();
+      }, 4000);
+    };
+    const onSearch = async (searchvalue) => {
+      console.log("inside search", searchvalue)
+      setSearch(searchvalue);
+      // console.log( search)
+      getData(search)
+    }
+    useEffect(() => {
+      //onload
       getData();
-    }, 4000);
-  };
-  const onSearch = async (searchvalue) => {
-    console.log("inside search", searchvalue)
-    setSearch(searchvalue);
-    // console.log( search)
-    getData(search)
-  }
-  useEffect(() => {
-    //onload
-    getData(search);
-  }, []);
-  const logout = () => {
-    localStorage.removeItem('name');
-    localStorage.removeItem('contact');
-    window.open("/")
-  }
-
+    }, []);
+   
+  
   return (
     <div>
-      <Sidebar />
+        <Sidebar />
       <div style={{ display: "flex" }}>
-        <Stack
+      <Stack
           flexDirection="row"
           justifyContent="space-between"
           sx={{ padding: "20px 0px" }}
@@ -137,50 +134,40 @@ export default function View_booking() {
               }}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              onKeyPress={(e) => onSearch(e.target.value)}
+            //   onKeyPress={(e) => onSearch(e.target.value)}
             />
           </Search>
         </Stack>
         <button
-          className="btn btn-danger"
-          onClick={logout}
-          style={{ float: "right", marginLeft: "550px", marginTop: "20px", height: "40px" }}
-        >
-          {" "}
-          Logout
-        </button>
-
-        <button
           className="btn btn-primary"
-          onClick={() => navigate("/add_booking")}
-          style={{ float: "right", margin: "20px" }}
+          onClick={() => navigate("/add_admin")}
+          style={{ float: "right",  marginLeft: "600px", marginTop: "20px", height: "40px"  }}
         >
           {" "}
-          <AddIcon />Merchent
+          <AddIcon />Admin
         </button>
       </div>
       <div>
-        <h4>Merchent |<small>Merchent list</small></h4>
+        <h4>Merchent |<small>Admin list</small></h4>
       </div>
       <Table striped bordered hover style={{ marginLeft: "200px" }}>
         <thead>
           <tr>
-            <th>Id</th>
-            <th>legal_name</th>
-            <th>State</th>
-            <th>city</th>
-            <th>Contact Number</th>
+           
+            <th>Name</th>
+            <th>Email</th>
+            <th>Designation</th>
+            <th>Is Super Admin</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {admin.map((item) => (
             <tr>
-              <td>{item.id}</td>
-              <td>{item.legal_name}</td>
-              <td>{item.state}</td>
-              <td>{item.city}</td>
-              <td>{item.contact_no}</td>
+              <td>{item.name}</td>
+              <td>{item.email}</td>
+              <td>{item.designation}</td>
+              <td>{item.is_super_admin===1?"yes":"no"}</td>
               <td style={{ paddingRight: "90px" }}>
                 <button className="btn btn-warning" style={{ margin: "10px" }} onClick={() => viewSingleData(item.id)} >
                   <VisibilityIcon />
@@ -205,7 +192,9 @@ export default function View_booking() {
         </tbody>
       </Table>
       <ToastContainer />
-    </div>
 
-  );
+    </div>
+  )
 }
+
+export default View_admin
