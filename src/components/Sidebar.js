@@ -42,7 +42,7 @@ export default function Sidebar() {
             aria-controls="collapseTwo"
           >
             <Link to="/View_booking" style={{ color: "White" }}>
-              Booking
+              Merchent
             </Link>
             {/* <span>Products</span> */}
           </a>

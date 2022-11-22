@@ -14,22 +14,23 @@ const AppRoutes = (props) => {
   return (
     <BrowserRouter>
       <Routes>
-        {
+        {/* {
+          
           (localStorage.getItem("name") && localStorage.getItem("contact")) ?
-            <>
-       
+            <> */}
+              <Route element={<Login />} path='/'></Route>
               <Route element={<Add_booking />} path='/add_booking' ></Route>
               <Route element={<View_booking />} path='/view_booking'></Route>
               <Route element={<ProtectedRoute/>}></Route>
               <Route element={<View_single_detail />} path='/view_single_detail/:id'></Route>
-             <Route element={<HomePage />} path='/home'></Route>
+              <Route element={<HomePage />} path='/home'></Route>
               <Route element={<Edit_booking />} path='/edit_booking/:id'></Route>
-            </>
+            {/* </>
             :
             <>
-              <Route element={<Login />} path='/'></Route>
-            </>
-        }
+              
+            </>  */}
+        {/* } */}
       </Routes>
     </BrowserRouter>
   );
