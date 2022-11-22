@@ -4,7 +4,7 @@ import Main from "../components/Main";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div>
       <div id="wrapper">
