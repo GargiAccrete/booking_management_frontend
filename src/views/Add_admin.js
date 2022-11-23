@@ -30,6 +30,13 @@ const StyledTextField = styled(TextField)(() => ({
   }));
 function Add_admin() {
     const [addadmin, setaddAdmin] = useState({});
+    const[designation,setDesignation]=useState({})
+    const Managerdata = [
+      {value: '1',    text: 'Manager '  },
+      {value: '2', text: 'sales Manager'},
+      {value: '3',   text: 'Manager2'  },
+     
+  ];
     const history = useNavigate();
 let getonChange = (event) => {
     // console.log(event.target.value);
@@ -43,8 +50,8 @@ let getonChange = (event) => {
       name: addadmin.name,
       email: addadmin.email,
       password:addadmin.password,
-      designation:addadmin.designation,
-      is_super_admin: addadmin.is_super_admin,
+      designation:designation,
+      is_super_admin: addadmin.optradio ||'no',
     
     };
     AdminService.AddData("adminUser/insert", data).then(() => {
@@ -100,15 +107,12 @@ let getonChange = (event) => {
       <div class="row">
         <div class="col">
           <StyledFormLabel htmlFor="country"> Designation: </StyledFormLabel>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="designation"
-            value={addadmin.designation}
-            name="designation"
-            onChange={getonChange}
-            required
-          />
+          <select onChange={(event) => setDesignation(event.target.value)}  value={designation}>
+              <option>---------Select Menu-------</option>
+                {Managerdata.map(item => {
+                   return (<option key={item.value} value={item.value}>{item.text}</option>);
+                })}
+          </select>
         </div>
 
         <div class="col">
@@ -125,18 +129,16 @@ let getonChange = (event) => {
         </div>
       </div>
       <div class="row">
-      <div class="col">
-          <StyledFormLabel htmlFor="country"> Super Admin : </StyledFormLabel>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="address_line_1"
-            value={addadmin.is_super_admin}
-            name="is_super_admin"
-            onChange={getonChange}
-            required
-          />
-      </div>
+      <div class="col" style={{display:"flex"}}>
+            <StyledFormLabel htmlFor="country" style={{margin:"33px"}}>
+              {" "}
+             Is Super Admin? yes/no :{" "}
+            </StyledFormLabel>
+            <div style={{ display: "flex" }}>
+            <input name="optradio" type="hidden" value="no"/>
+            <input name="optradio" type="checkbox" value="yes"  onChange={getonChange}/>
+            </div>
+            </div>
       <div class="col">
         </div>
       </div>

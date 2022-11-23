@@ -75,6 +75,12 @@ const FetchData =(endpoint)=>{
 
     })
 }
+const FetchCityData =(endpoint)=>{
+    return axios.get(`http://localhost:3002/${endpoint}`).then((result)=>{
+        return result.data;
+
+    })
+}
 const PutData = (endpoint,data) =>  {
     try {
         // console.log(data);
@@ -129,5 +135,6 @@ export default {
     PutData,
     FetchData,
     deleteData,
-    login
+    login,
+    FetchCityData
 }

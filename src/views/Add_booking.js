@@ -37,6 +37,11 @@ const StyledFormLabel = styled(FormLabel)(() => ({
 export default function Add_booking() {
   const [addtask, setaddtask] = useState({});
   const [brand, setBrand] = useState("");
+  const [stateid, setStateId] = useState("");
+  const [cityId, setCityId] = useState("");
+  const [state, setState] = useState([]);
+  const [city, setCity] = useState([])
+  
   const history = useNavigate();
 
   const houses = [
@@ -61,8 +66,8 @@ export default function Add_booking() {
       brand_associate: addtask.optradio||"false",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
-      city: addtask.city,
-      state: addtask.state,
+      city: cityId,
+      state: stateid,
       pincode: addtask.pincode,
       contact_no: addtask.contact_no,
     };
@@ -74,7 +79,43 @@ export default function Add_booking() {
     }, 4000);
    
   };
+  useEffect(() => {
+    getState();
+  
+  },[])
+  useEffect(() => {
+  
+    getCity();
+  },[stateid])
+  
+  let getState = async () => {
+    console.log("inside function")
+    Demo2.FetchCityData(`register/mapstate`).then((result) => {
+      console.log("result", result)
+      setState(result.data);
+      getCity()
+    
 
+      // toast("listed Successfully!");
+      // console.log(data);
+    });
+
+  };
+  const getCity = async () => {
+    console.log("state_id")
+    const rescity = await axios.get(`http://localhost:3002/register/mapcity/${stateid}`);
+    console.log("rescity",rescity.data.data)
+    // const getci = await rescity.json();
+    setCity(rescity.data.data)
+
+  }
+  const handleState = (event) => {
+    const getstateId = event.target.value;
+    console.log("__", getstateId)
+    setStateId(getstateId)
+
+  }
+  
   let passData = () => {
     alert("hiii");
     Demo2.AddData("Products", addtask).then(() => {
@@ -162,7 +203,7 @@ export default function Add_booking() {
             <input
               type="text"
               class="form-control"
-              placeholder="legal_name"
+              placeholder="Enter Name"
               value={addtask.legal_name}
               name="legal_name"
               onChange={getonChange}
@@ -175,7 +216,7 @@ export default function Add_booking() {
             <input
               type="text"
               class="form-control"
-              placeholder="address_line_1"
+              placeholder="address"
               value={addtask.address_line_1}
               name="address_line_1"
               onChange={getonChange}
@@ -189,13 +230,23 @@ export default function Add_booking() {
             <input
               type="text"
               class="form-control"
-              placeholder="address_line_2"
+              placeholder="address"
               value={addtask.address_line_2}
               name="address_line_2"
              required
             />
           </div>
           <div class="col">
+            <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
+            <select onChange={(event) => handleState(event)} >
+              <option>---------Select State-------</option>
+              {state.map((item) => {
+               
+               return (<option key={item.id} value={item.id}>{item.name}</option>);
+              })}
+            </select>
+          </div> 
+          {/* <div class="col">
             <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
             <input
               type="text"
@@ -206,11 +257,21 @@ export default function Add_booking() {
               onChange={getonChange}
               required
             />
-          </div>
+          </div> */}
            
         </div>
         <div class="row">
-          <div class="col">
+        <div class="col">
+            <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
+            <select  onChange={(e)=>setCityId(e.target.value)}>
+              <option>---------Select City-------</option>
+              {city.map(item => {
+                //  console.log("firstcity",city)
+                return (<option key={item.id} value={item.id}>{item.city}</option>);
+              })}
+            </select>
+          </div>
+          {/* <div class="col">
             <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
             <input
               type="text"
@@ -221,7 +282,7 @@ export default function Add_booking() {
               onChange={getonChange}
               required
             />
-          </div>
+          </div> */}
          
           <div class="col">
             <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
@@ -240,7 +301,7 @@ export default function Add_booking() {
           <div class="col">
           <StyledFormLabel htmlFor="country">
               {" "}
-              Brand Area:{" "}
+              Business Area:{" "}
             </StyledFormLabel>
             <select onChange={(event) => setBrand(event.target.value)}  value={brand}>
               <option>---------Select Menu-------</option>
@@ -255,7 +316,7 @@ export default function Add_booking() {
             <input
               type="text"
               class="form-control"
-              placeholder="contact_no"
+              placeholder="contact"
               value={addtask.contact_no}
               name="contact_no"
               onChange={getonChange}
