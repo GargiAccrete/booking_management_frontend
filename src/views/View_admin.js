@@ -12,6 +12,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
+import { TextField, FormLabel, MenuItem, Grid } from "@mui/material";
+import '../Assets/View_admin.css'
 import {
   InputBase,
   Button,
@@ -39,6 +41,12 @@ const Search = styled("div")(({ theme }) => ({
     width: "auto",
   },
 }));
+const StyledFormLabel = styled(FormLabel)(() => ({
+  display: "block",
+  fontWeight: "500",
+  color: "black",
+  fontSize: "13px",
+}))
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -66,57 +74,69 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 function View_admin() {
-    let navigate = useNavigate();
-    const [admin, setAdmin] = useState([]);
-    const [search, setSearch] = useState("")
-    let getData = async () => {
-      console.log("inside function")
-      AdminService.FetchData(`adminUser/list`).then((result) => {
-        console.log("result", result)
-        setAdmin(result.data);
-      
-        // toast("listed Successfully!");
-        // console.log(data);
-      });
-      
-    };
-   
-  
-    let updateData = (id) => {
-      console.log("id is" + id);
-      navigate(`/edit_admin/${id}`);
-    };
-    let viewSingleData = (id) => {
-      console.log("id is" + id);
-      navigate(`/view_admin_detail/${id}`);
-    }
-    let deletedata = (id) => {
-      console.log(id);
-      AdminService.deleteData(`adminUser/${id}/delete`).then(() => {
-        toast("Deleted Successfully!");
-  
-      });
-      setTimeout(() => {
-        getData();
-      }, 4000);
-    };
-    const onSearch = async (searchvalue) => {
-      console.log("inside search", searchvalue)
-      setSearch(searchvalue);
-      // console.log( search)
-      getData(search)
-    }
-    useEffect(() => {
-      //onload
+  let navigate = useNavigate();
+  const [admin, setAdmin] = useState([]);
+  const [search, setSearch] = useState("")
+  const [show, setShow] = useState(false);
+  const [selectedData, setSelectedData] = useState({});
+  const hanldeClick = (selectedRec) => {
+
+    setSelectedData(selectedRec);
+    setShow(true);
+  };
+  console.log("---", selectedData)
+  const hideModal = () => {
+    setShow(false);
+  };
+
+  let getData = async () => {
+    console.log("inside function")
+    AdminService.FetchData(`adminUser/list`).then((result) => {
+      console.log("result", result)
+      setAdmin(result.data);
+
+      // toast("listed Successfully!");
+      // console.log(data);
+    });
+
+  };
+
+
+  let updateData = (id) => {
+    console.log("id is" + id);
+    navigate(`/edit_admin/${id}`);
+  };
+  let viewSingleData = (id) => {
+    console.log("id is" + id);
+    navigate(`/view_admin_detail/${id}`);
+  }
+  let deletedata = (id) => {
+    console.log(id);
+    AdminService.deleteData(`adminUser/${id}/delete`).then(() => {
+      toast("Deleted Successfully!");
+
+    });
+    setTimeout(() => {
       getData();
-    }, []);
-   
-  
+    }, 4000);
+  };
+  const onSearch = async (searchvalue) => {
+    console.log("inside search", searchvalue)
+    setSearch(searchvalue);
+    // console.log( search)
+    getData(search)
+  }
+  useEffect(() => {
+    //onload
+    getData();
+  }, []);
+
+
   return (
     <div>
-        <Sidebar />
+      <Sidebar />
       <div style={{ display: "flex" }}>
-      <Stack
+        <Stack
           flexDirection="row"
           justifyContent="space-between"
           sx={{ padding: "20px 0px" }}
@@ -141,19 +161,19 @@ function View_admin() {
         <button
           className="btn btn-primary"
           onClick={() => navigate("/add_admin")}
-          style={{ float: "right",  marginLeft: "600px", marginTop: "20px", height: "40px"  }}
+          style={{ float: "right", marginLeft: "600px", marginTop: "20px", height: "40px" }}
         >
           {" "}
           <AddIcon />Admin
         </button>
       </div>
       <div>
-        <h4>Merchent |<small>Admin list</small></h4>
+        <h4>Admin |<small>Admin list</small></h4>
       </div>
       <Table striped bordered hover style={{ marginLeft: "200px" }}>
         <thead>
           <tr>
-           
+
             <th>Name</th>
             <th>Email</th>
             <th>Designation</th>
@@ -167,11 +187,16 @@ function View_admin() {
               <td>{item.name}</td>
               <td>{item.email}</td>
               <td>{item.designation}</td>
-              <td>{item.is_super_admin===1?"yes":"no"}</td>
+              <td>{item.is_super_admin === 1 ? "yes" : "no"}</td>
               <td style={{ paddingRight: "90px" }}>
-                <button className="btn btn-warning" style={{ margin: "10px" }} onClick={() => viewSingleData(item.id)} >
-                  <VisibilityIcon />
+                <button className="btn btn-warning" style={{ margin: "10px" }} onClick={() => hanldeClick(item)} >
+                  <a href="#">
+                    <VisibilityIcon />
+                  </a>
                 </button>
+                {/* <button className="btn btn-warning" style={{ margin: "10px" }} onClick={() => viewSingleData(item.id)} >
+                  <VisibilityIcon />
+                </button> */}
                 <button className="btn btn-danger" style={{ margin: "10px" }} onClick={() => deletedata(item.id)}>
                   <DeleteIcon />
                 </button>
@@ -191,10 +216,60 @@ function View_admin() {
           ))}
         </tbody>
       </Table>
+      {show && <Modal details={selectedData} handleClose={hideModal} />}
       <ToastContainer />
 
     </div>
   )
 }
+
+
+
+const Modal = ({ details, handleClose }) => {
+  return (
+    <div>
+      <div class='modal display-block'>
+        <div className="modal-main">
+          <div>
+            {/* <Sidebar /> */}
+            <h4>
+              <small> Admin</small>
+            </h4>
+          </div>
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+              {/* <Grid item sx={{ m: 1 }} md={5.7} xs={12}> */}
+              <StyledFormLabel htmlFor="country"> Name:{details.name}</StyledFormLabel>
+
+              {/* </Grid> */}
+            </Grid>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+              <StyledFormLabel htmlFor="country" >
+                {" "}
+                Email :{" "} {details.email}
+              </StyledFormLabel>
+
+            </Grid>
+          </Grid>
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+              <StyledFormLabel htmlFor="country"> Designation: {details.designation} </StyledFormLabel>
+            </Grid>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+              <StyledFormLabel htmlFor="country"> Super Admin : {details.is_super_admin === 1 ? "yes" : "no"}  </StyledFormLabel>
+            </Grid>
+          </Grid>
+          <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+            <button class="btn btn-danger" style={{ width: "100px", textAlign: "center" }} onClick={handleClose}>close</button>
+          </Grid>
+        </div>
+      </div>
+      <ToastContainer />
+    </div>
+
+  );
+};
+
+
 
 export default View_admin
