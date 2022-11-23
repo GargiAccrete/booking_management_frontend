@@ -2,7 +2,7 @@ import React from "react";
 import "../Assets/login.css";
 import dining from "../Assets/image/dining.jpg";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import Demo2 from "../services/Demo2";
 import Footer from "../components/Footer";
 
@@ -13,11 +13,10 @@ export default function Login() {
     "Access-Control-Allow-Origin": "*",
     "Content-type": "application/json",
   };
-  let navigate = useNavigate();
+  let Navigate = useNavigate();
 
   const handleSubmit=(e) =>{
-   
-    e.preventDefault();
+   e.preventDefault();
     var data = {
         'name': name,
         'contact': contact,
@@ -25,10 +24,11 @@ export default function Login() {
     Demo2.login('login/login',data).then((response) => {
       localStorage.setItem('name', name);
       localStorage.setItem('contact', contact);
-      setTimeout(()=>{
-        navigate("/")
-      })
-    console.log("successfully login",response)
+      window.open("/view_booking")
+      // setTimeout(()=>{
+      //   Navigate("/home")
+      // })
+      // return Navigate(from, { replace: true })
       }).catch(e =>{
         console.log(e)
       })
@@ -37,20 +37,15 @@ export default function Login() {
 
   return (
     <div>
-      <div id="content-wrapper" class="d-flex flex-column"></div>
+      <div id="content-wrapper" class="d-flex flex-column" style={{backgroundColor:"rgb(255 247 237)"}}>
       <div id="content">
         <div class="container-fluid">
           <div class="container" style={{ height: "500px" }}>
             <section
-              class=" text-center text-lg-start"
-              style={{ paddingLeft: "230px" }}
-            >
-              <div class="card mb-3">
-                <div
-                  class=" g-0 d-flex align-items-left"
-                  style={{ marginTop: "50px" }}
-                >
-                  <div class="col-lg-4 d-none d-lg-flex">
+              class="  text-lg-start"
+              style={{display:"flex"}}
+             >
+           <div class="col-lg-8 d-none d-lg-flex"  style={{height:"100vh"}}>
                     <img
                       src={dining}
                       alt="Trendy Pants and Shoes"
@@ -58,8 +53,8 @@ export default function Login() {
                     />
                   </div>
                   <div class="col-lg-8">
-                    <div class="card-body py-5 px-md-5">
-                      <h1>Login Page</h1>
+                    <div class="card-body py-5 px-md-5" style={{marginRight:"199px"}}>
+                      <h1>Login </h1>
                       <form onSubmit={handleSubmit}>
                         <div class="form-outline mb-4">
                           <input
@@ -73,7 +68,7 @@ export default function Login() {
                           <label
                             class="form-label"
                             for="form2Example1">
-                            UserName:
+                          Email:
                           </label>
                         </div>
 
@@ -89,7 +84,7 @@ export default function Login() {
                             class="form-label"
                             for="form2Example2"
                           >
-                            Phone Number:
+                            Password:
                           </label>
                         </div>
                         <div>
@@ -121,10 +116,11 @@ export default function Login() {
                       <Footer />
                     </div>
                   </div>
-                </div>
-              </div>
+               
+              
             </section>
           </div>
+        </div>
         </div>
       </div>
     </div>

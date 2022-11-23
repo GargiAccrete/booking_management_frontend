@@ -69,8 +69,8 @@ const login = (endpoint,data) =>  {
 
    
 // }
-const FetchData =(endpoint,id='')=>{
-    return axios.get(`http://localhost:3002/${endpoint}/${id}`).then((result)=>{
+const FetchData =(endpoint)=>{
+    return axios.get(`http://localhost:3002/${endpoint}`).then((result)=>{
         return result.data;
 
     })

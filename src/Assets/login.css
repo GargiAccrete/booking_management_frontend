@@ -1,18 +1,15 @@
-.rounded-t-5 {
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
 }
-img {  
-  max-width: 100%;  
-  height: auto;  
-  }  
-
-@media (min-width: 992px) {
-  .rounded-tr-lg-0 {
-    border-top-right-radius: 0;
-  }
-
-  .rounded-bl-lg-5 {
-    border-bottom-left-radius: 0.5rem;
-  }
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
 }
