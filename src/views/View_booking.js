@@ -185,7 +185,7 @@ export default function View_booking() {
       <div>
         <h4>Merchent |<small>Merchent list</small></h4>
       </div>
-      <Table striped bordered hover style={{ marginLeft: "200px" }}>
+      <Table striped bordered hover style={{ marginLeft: "225px" }}>
         <thead>
           <tr>
             <th>Id</th>
@@ -197,9 +197,9 @@ export default function View_booking() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {data.map((item,index) => (
             <tr>
-              <td>{item.id}</td>
+              <td>{index+1}</td>
               <td>{item.legal_name}</td>
               <td>{item.state}</td>
               <td>{item.city}</td>

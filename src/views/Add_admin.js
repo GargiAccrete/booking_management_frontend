@@ -34,7 +34,7 @@ function Add_admin() {
     const Managerdata = [
       {value: '1',    text: 'Manager '  },
       {value: '2', text: 'sales Manager'},
-      {value: '3',   text: 'Manager2'  },
+      // {value: '3',   text: 'Manager2'  },
      
   ];
     const history = useNavigate();
@@ -51,7 +51,7 @@ let getonChange = (event) => {
       email: addadmin.email,
       password:addadmin.password,
       designation:designation,
-      is_super_admin: addadmin.optradio ||'no',
+      is_super_admin: addadmin.optradio ||'0',
     
     };
     AdminService.AddData("adminUser/insert", data).then(() => {
@@ -135,8 +135,8 @@ let getonChange = (event) => {
              Is Super Admin? yes/no :{" "}
             </StyledFormLabel>
             <div style={{ display: "flex" }}>
-            <input name="optradio" type="hidden" value="no"/>
-            <input name="optradio" type="checkbox" value="yes"  onChange={getonChange}/>
+            <input name="optradio" type="hidden" value="0"/>
+            <input name="optradio" type="checkbox" value="1"  onChange={getonChange}/>
             </div>
             </div>
       <div class="col">

@@ -41,17 +41,25 @@ function Edit_booking() {
   const [cityId, setCityId] = useState("");
   const [state, setState] = useState([]);
   const [city, setCity] = useState([])
+  const [type, setType] = useState("");
   const navigate = useNavigate();
   const allparams = useParams()
   const houses = [
-    { value: 'ParathaHouse', text: 'ParathaHouse' },
-    { value: 'BiryaniHouse', text: 'BiryaniHouse' },
-    { value: 'Snacks', text: 'Snacks' },
-    { value: 'VadapavFactory', text: 'VadapavFactory' }
+    { value: '1', text: 'ParathaHouse' },
+    { value: '2', text: 'BiryaniHouse' },
+    { value: '3', text: 'Snacks' },
+    { value: '4', text: 'VadapavFactory' }
+  ];
+  const businesstype = [
+    { value: '1', text: 'Ltd' },
+    { value: '2', text: 'Pvt' },
+    { value: '3', text: 'Llp' },
+  
   ];
   useEffect(() => {
     getData();
     getState();
+    // getCity();
   }, [])
   useEffect(() => {
     getCity();
@@ -67,13 +75,17 @@ function Edit_booking() {
     Demo2.FetchData(`register/${allparams.id}/view`).then((result) => {
       console.log("result", result)
       setaddtask(result.data)
+      setType(result.data.business_type)
+      setBrand(result.data.business_area)
+      setStateId(result.data.state)
+      setCityId(result.data.city)
     })
   }
 
   let getState = async () => {
     console.log("inside function")
     Demo2.FetchCityData(`register/mapstate`).then((result) => {
-      console.log("result", result)
+      // console.log("result", result)
       setState(result.data);
       getCity()
       // toast("listed Successfully!");
@@ -103,11 +115,11 @@ function Edit_booking() {
       business_type: addtask.business_type,
       legal_name: addtask.legal_name,
       business_area: brand,
-      brand_associate: addtask.optradio || "No",
+      brand_associate: addtask.optradio || "0",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: cityId,
-      state: state.id,
+      state: stateid,
       pincode: addtask.pincode,
       contact_no: addtask.contact_no,
     };
@@ -133,27 +145,20 @@ function Edit_booking() {
         <div class="row">
           <div class="col">
             <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country">
-                Busineess Type :
-              </StyledFormLabel>
-              <StyledTextField
-                placeholder="select"
-                name="business_type"
-                value={addtask.business_type}
-                onChange={getonChange}
-                fullWidth
-                select
-              >
-                <MenuItem key="Ltd" value="Ltd">
-                  Ltd
-                </MenuItem>
-                <MenuItem key="Pvt" value="Pvt">
-                  Pvt
-                </MenuItem>
-                <MenuItem key="Llp" value="Llp">
-                  Llp
-                </MenuItem>
-              </StyledTextField>
+            <StyledFormLabel htmlFor="country">
+              {" "}
+              Business Type:{" "}
+            </StyledFormLabel>
+            <select 
+            onChange={(event) =>
+               setType(event.target.value)} 
+               value={type} >
+              <option>---------Select Menu-------</option>
+              {businesstype.map(item => {
+                console.log("item",item)
+                return (<option key={item.value} value={item.value}>{item.text}</option>);
+              })}
+            </select>
             </Grid>
           </div>
           <div class="col" style={{ display: "flex" }}>
@@ -162,8 +167,8 @@ function Edit_booking() {
               Brand Associate{" "}
             </StyledFormLabel>
             <div style={{ display: "flex" }}>
-              <input name="optradio" type="hidden" value="No" />
-              <input name="optradio" type="checkbox" value="yes" onChange={getonChange} />
+              <input name="optradio" type="hidden" value="0" />
+              <input name="optradio" type="checkbox" value="1" onChange={getonChange}  checked={addtask.brand_associate?1:0}/>
               {/* <input
                   type="radio"
                   id="yes"
@@ -233,11 +238,14 @@ function Edit_booking() {
           </div>
           <div class="col">
             <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
-            <select onChange={(event) => handleState(event)} >
+            {console.log(addtask.state)}
+            <select 
+              onChange={(event) => handleState(event)}
+              value={stateid}
+              >
               <option>---------Select State-------</option>
               {state.map((item) => {
-
-                return (<option key={item.id} value={item.id}>{item.name}</option>);
+                 return (<option key={item.id} value={item.id}>{item.name}</option>);
               })}
             </select>
             {/* <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
@@ -255,11 +263,11 @@ function Edit_booking() {
         <div class="row">
           <div class="col">
             <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-            <select onChange={(e) => setCityId(e.target.value)}>
+            <select onChange={(e) => setCityId(e.target.value)} value={cityId} >
               <option>---------Select City-------</option>
               {city.map(item => {
                 //  console.log("firstcity",city)
-                return (<option key={item.id} value={item.name}>{item.city}</option>);
+                return (<option key={item.id} value={item.id}>{item.city}</option>);
               })}
             </select>
             {/* <input
@@ -291,9 +299,13 @@ function Edit_booking() {
               {" "}
               Busineess Area:{" "}
             </StyledFormLabel>
-            <select onChange={(event) => setBrand(event.target.value)} value={brand}>
+            <select 
+            onChange={(event) =>
+               setBrand(event.target.value)} 
+               value={brand} >
               <option>---------Select Menu-------</option>
               {houses.map(item => {
+                console.log("item",item)
                 return (<option key={item.value} value={item.value}>{item.text}</option>);
               })}
             </select>

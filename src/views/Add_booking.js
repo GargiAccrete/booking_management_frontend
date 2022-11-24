@@ -52,9 +52,9 @@ export default function Add_booking() {
     { value: '4', text: 'VadapavFactory' }
   ];
   const businesstype = [
-    { value: '1', name: 'Ltd' },
-    { value: '2', name: 'Pvt' },
-    { value: '3', name: 'Llp' },
+    { value: '1', text: 'Ltd' },
+    { value: '2', text: 'Pvt' },
+    { value: '3', text: 'Llp' },
   
   ];
 
@@ -144,16 +144,21 @@ export default function Add_booking() {
         <div class="row">
           <div class="col">
             <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country">
-                Busineess Type :
-              </StyledFormLabel>
-              <select  onChange={(event) => setType(event.target.value)} value={type} >
-              <option>---------Select Type-------</option>
-              {businesstype.map((item) => {
-
-                return (<option key={item.id} value={item.id}>{item.name}</option>);
+            <div class="col">
+            <StyledFormLabel htmlFor="country">
+              {" "}
+              Business Type:{" "}
+            </StyledFormLabel>
+            <select onChange={(event) =>
+               setType(event.target.value)} value={type}>
+              <option>---------Select Menu-------</option>
+              {businesstype.map(item => {
+                console.log("item",item)
+                return (<option key={item.value} value={item.value}>{item.text}</option>);
               })}
             </select>
+          </div>
+
             </Grid>
           </div>
           <div class="col" style={{ display: "flex" }}>
@@ -298,7 +303,8 @@ export default function Add_booking() {
               {" "}
               Business Area:{" "}
             </StyledFormLabel>
-            <select onChange={(event) => setBrand(event.target.value)} value={brand}>
+            <select onChange={(event) =>
+               setBrand(event.target.value)} value={brand}>
               <option>---------Select Menu-------</option>
               {houses.map(item => {
                 return (<option key={item.value} value={item.value}>{item.text}</option>);

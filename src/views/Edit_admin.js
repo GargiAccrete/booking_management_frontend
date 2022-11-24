@@ -33,6 +33,13 @@ function Edit_admin() {
         getData();
     }, [])
     const [upadmin, setupAdmin] = useState({});
+    const [designation, setDesignation] = useState([])
+    const Managerdata = [
+        { value: '1', text: 'Manager ' },
+        { value: '2', text: 'sales Manager' },
+        // {value: '3',   text: 'Manager2'  },
+
+    ];
     const navigate = useNavigate();
     const allparams = useParams();
     let getonChange = (event) => {
@@ -44,6 +51,7 @@ function Edit_admin() {
         AdminService.FetchData(`adminUser/${allparams.id}/view`).then((result) => {
             console.log("result", result)
             setupAdmin(result.data)
+            setDesignation(result.data.designation)
         })
     }
 
@@ -53,7 +61,7 @@ function Edit_admin() {
             name: upadmin.name,
             email: upadmin.email,
             password: upadmin.password,
-            designation: upadmin.designation,
+            designation:designation,
             is_super_admin: upadmin.is_super_admin,
 
         };
@@ -70,7 +78,7 @@ function Edit_admin() {
             <div>
                 <Sidebar />
                 <h4>
-                    Admin |<small>add admin</small>
+                    Admin |<small>Edit admin</small>
                 </h4>
             </div>
             <form onSubmit={handleSubmit}>
@@ -108,14 +116,12 @@ function Edit_admin() {
                 <div class="row">
                     <div class="col">
                         <StyledFormLabel htmlFor="country"> Designation: </StyledFormLabel>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="designation"
-                            value={upadmin.designation}
-                            name="designation"
-                            onChange={getonChange}
-                        />
+                       <select onChange={(event) => setDesignation(event.target.value)} value={designation}  > 
+                            <option>---------Select Menu-------</option>
+                            {Managerdata.map(item => {
+                                return (<option key={item.value} value={item.value}>{item.text}</option>);
+                            })}
+                        </select>
                     </div>
 
                     <div class="col">
@@ -131,20 +137,19 @@ function Edit_admin() {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col">
-                        <StyledFormLabel htmlFor="country"> Super Admin : </StyledFormLabel>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="address_line_1"
-                            value={upadmin.is_super_admin}
-                            name="is_super_admin"
-                            onChange={getonChange}
-                        />
-                    </div>
-                    <div class="col">
-                    </div>
-                </div>
+      <div class="col" style={{display:"flex"}}>
+            <StyledFormLabel htmlFor="country" style={{margin:"33px"}}>
+              {" "}
+             Is Super Admin? yes/no :{" "}
+            </StyledFormLabel>
+            <div style={{ display: "flex" }}>
+            <input name="optradio" type="hidden" value="0" />
+            <input name="optradio" type="checkbox" value="1"  onChange={getonChange} checked={upadmin.is_super_admin?1:0}/>
+            </div>
+            </div>
+      <div class="col">
+        </div>
+      </div>
                 <button type="submit" class="btn btn-primary">
                     Submit
                 </button>
