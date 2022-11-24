@@ -91,13 +91,13 @@ export default function View_booking() {
 
   const hanldeClick = (id) => {
     {
-      Demo2.FetchData(`register/${id}/view`).then((result)=>{
-          console.log("result",result)
-          setModeldata(result.data)
-    setModel(true)
+      Demo2.FetchData(`register/${id}/view`).then((result) => {
+        console.log("result", result)
+        setModeldata(result.data)
+        setModel(true)
       })
-  }
-   
+    }
+
 
   }
   const hideModal = () => {
@@ -241,88 +241,85 @@ const Modal = ({ details, handleClose }) => {
     <div>
       <div class='modal display-block'>
         <div className="modal-main">
-        <Grid item md={12} sm={8} xs={12} container spacing={1}>
-        <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-        <h4 >
-           <small>Merchent</small>
-        </h4>
-        </Grid>
-        </Grid>
-        <Grid item md={12} sm={8} xs={12} container spacing={1}>
-        <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+            <div style={{display:"flex"}}>
+            {/* <Sidebar /> */}
+              <p style={{margin:"14px"}}>Merchent Details</p>
+            </div>
+            </Grid>
+          </Grid>
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
               {/* <Grid item sx={{ m: 1 }} md={5.7} xs={12}> */}
-              <StyledFormLabel htmlFor="country">
-                Busineess Type :{details.busineess_type}
-              </StyledFormLabel>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "96px" }}><b>Busineess Type :</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "53px" }}>{details.busineess_type}</StyledFormLabel>
 
               {/* </Grid> */}
             </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country">
-                {" "}
-                Brand Associate{" "}:{details.brand_associate}
-              </StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "67px" }}><b>Brand Associate:</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "21px" }}>{details.brand_associate==1?"yes":"no"}</StyledFormLabel>
+            </Grid>
+          </Grid>
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "96px" }}><b> Legal Name:</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "53px" }}> {details.legal_name}</StyledFormLabel>
 
             </Grid>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "67px" }}> <b> Address1 :</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "53px" }}>  {details.address_line_1}</StyledFormLabel>
             </Grid>
-            <Grid item md={12} sm={8} xs={12} container spacing={1}>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> Legal Name: {details.legal_name}</StyledFormLabel>
+          </Grid>
+
+
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "96px" }}> <b>Address2: </b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "68px" }}> {details.address_line_2}</StyledFormLabel>
 
             </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> Address1 : {details.address_line_2}</StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "67px" }}><b> City : </b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "89px" }}>{details.city} </StyledFormLabel>
+            </Grid>
+          </Grid>
 
-            </Grid>
-            </Grid>
-          
-       
-            <Grid item md={12} sm={8} xs={12} container spacing={1}>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> Address2: {details.address_line_1}</StyledFormLabel>
 
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "96px" }}><b> State :</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "89px" }}> {details.state}</StyledFormLabel>
             </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> City :{details.city} </StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "67px" }}><b> PinCode:</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "53px" }}> {details.pincode}</StyledFormLabel>
+            </Grid>
+          </Grid>
+          <Grid item md={12} sm={8} xs={12} container spacing={1}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "96px" }}><b>Busineess Area: </b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "34px" }}> {details.business_area}</StyledFormLabel>
+            </Grid>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{ display: "flex" }}>
+              <StyledFormLabel htmlFor="country" style={{ marginLeft: "67px" }}><b> Contact No:</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{ marginLeft: "53px" }}> {details.contact}</StyledFormLabel>
+            </Grid>
+          </Grid>
 
-            </Grid>
-            </Grid>
-         
-      
-            <Grid item md={12} sm={8} xs={12} container spacing={1}>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> State {details.state}</StyledFormLabel>
+          <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+            <button class="btn btn-danger" style={{ width: "100px", textAlign: "center" }} onClick={handleClose}>close</button>
+          </Grid>
 
-            </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> PinCode: {details.pincode}</StyledFormLabel>
-</Grid>
-            </Grid>
-        
-         
-            <Grid item md={12} sm={8} xs={12} container spacing={1}>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country">
-                {" "}
-                Busineess Area:{" "}: {details.business_area}
-              </StyledFormLabel>
-            </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> Contact No: {details.contact}</StyledFormLabel>
-            </Grid>
-            </Grid>
-           
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <button class="btn btn-danger" style={{ width: "100px", textAlign: "center" }} onClick={handleClose}>close</button>
-            </Grid>
-          
-            
-          </div>
+
         </div>
-
-        <ToastContainer />
       </div>
-  
+
+      <ToastContainer />
+    </div>
+
 
   );
 };

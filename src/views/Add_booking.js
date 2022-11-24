@@ -8,7 +8,7 @@ import Sidebar from "../components/Sidebar";
 import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {TextField,FormLabel,MenuItem,Grid} from "@mui/material";
+import { TextField, FormLabel, MenuItem, Grid } from "@mui/material";
 
 const header = {
   "Access-Control-Allow-Origin": "*",
@@ -37,19 +37,27 @@ const StyledFormLabel = styled(FormLabel)(() => ({
 export default function Add_booking() {
   const [addtask, setaddtask] = useState({});
   const [brand, setBrand] = useState("");
+  const [type, setType] = useState("");
   const [stateid, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
   const [state, setState] = useState([]);
   const [city, setCity] = useState([])
-  
+
   const history = useNavigate();
 
   const houses = [
-    {value: '1',    text: 'ParathaHouse'   },
-    {value: '2', text: 'BiryaniHouse'},
-    {value: '3',   text: 'Snacks'  },
-    {value: '4',   text: 'VadapavFactory'  }
-];
+    { value: '1', text: 'ParathaHouse' },
+    { value: '2', text: 'BiryaniHouse' },
+    { value: '3', text: 'Snacks' },
+    { value: '4', text: 'VadapavFactory' }
+  ];
+  const businesstype = [
+    { value: '1', name: 'Ltd' },
+    { value: '2', name: 'Pvt' },
+    { value: '3', name: 'Llp' },
+  
+  ];
+
 
   let getonChange = (event) => {
     // console.log(event.target.value);
@@ -60,10 +68,10 @@ export default function Add_booking() {
   let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
-      business_type: addtask.business_type,
+      business_type:type,
       legal_name: addtask.legal_name,
-      business_area: brand||"pppp",
-      brand_associate: addtask.optradio||"false",
+      business_area: brand || "pppp",
+      brand_associate: addtask.optradio || "0",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: cityId,
@@ -77,26 +85,24 @@ export default function Add_booking() {
     setTimeout(() => {
       history("/view_booking");
     }, 4000);
-   
+
   };
   useEffect(() => {
     getState();
-  
-  },[])
+
+  }, [])
   useEffect(() => {
-  
+
     getCity();
-  },[stateid])
-  
+  }, [stateid])
+
   let getState = async () => {
     console.log("inside function")
     Demo2.FetchCityData(`register/mapstate`).then((result) => {
       console.log("result", result)
       setState(result.data);
       getCity()
-    
-
-      // toast("listed Successfully!");
+       // toast("listed Successfully!");
       // console.log(data);
     });
 
@@ -104,7 +110,7 @@ export default function Add_booking() {
   const getCity = async () => {
     console.log("state_id")
     const rescity = await axios.get(`http://localhost:3002/register/mapcity/${stateid}`);
-    console.log("rescity",rescity.data.data)
+    console.log("rescity", rescity.data.data)
     // const getci = await rescity.json();
     setCity(rescity.data.data)
 
@@ -115,7 +121,7 @@ export default function Add_booking() {
     setStateId(getstateId)
 
   }
-  
+
   let passData = () => {
     alert("hiii");
     Demo2.AddData("Products", addtask).then(() => {
@@ -129,46 +135,35 @@ export default function Add_booking() {
   return (
     <div>
       <div>
-       <Sidebar />
+        <Sidebar />
         <h4>
-          Booking |<small>add booking</small>
+          Merchent |<small>add merchent</small>
         </h4>
       </div>
- <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div class="row">
           <div class="col">
             <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
               <StyledFormLabel htmlFor="country">
                 Busineess Type :
               </StyledFormLabel>
-              <StyledTextField
-                placeholder="select"
-                name="business_type"
-                value={addtask.business_type}
-                onChange={getonChange}
-                fullWidth
-                select
-              >
-                <MenuItem key="Ltd" value="1">
-                  Ltd
-                </MenuItem>
-                <MenuItem key="Pvt" value="2">
-                  Pvt
-                </MenuItem>
-                <MenuItem key="Llp" value="3">
-                  Llp
-                </MenuItem>
-              </StyledTextField>
+              <select  onChange={(event) => setType(event.target.value)} value={type} >
+              <option>---------Select Type-------</option>
+              {businesstype.map((item) => {
+
+                return (<option key={item.id} value={item.id}>{item.name}</option>);
+              })}
+            </select>
             </Grid>
           </div>
-          <div class="col" style={{display:"flex"}}>
-            <StyledFormLabel htmlFor="country" style={{margin:"33px"}}>
+          <div class="col" style={{ display: "flex" }}>
+            <StyledFormLabel htmlFor="country" style={{ margin: "33px" }}>
               {" "}
               Brand Associate :{" "}
             </StyledFormLabel>
             <div style={{ display: "flex" }}>
-            <input name="optradio" type="hidden" value="false"/>
-            <input name="optradio" type="checkbox" value="true"    onChange={getonChange}/>
+              <input name="optradio" type="hidden" value="0" />
+              <input name="optradio" type="checkbox" value="1" onChange={getonChange} />
               {/* <input
                 type="checkbox"
                 id="yes"
@@ -233,7 +228,7 @@ export default function Add_booking() {
               placeholder="address"
               value={addtask.address_line_2}
               name="address_line_2"
-             required
+              required
             />
           </div>
           <div class="col">
@@ -241,11 +236,11 @@ export default function Add_booking() {
             <select onChange={(event) => handleState(event)} >
               <option>---------Select State-------</option>
               {state.map((item) => {
-               
-               return (<option key={item.id} value={item.id}>{item.name}</option>);
+
+                return (<option key={item.id} value={item.id}>{item.name}</option>);
               })}
             </select>
-          </div> 
+          </div>
           {/* <div class="col">
             <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
             <input
@@ -258,12 +253,12 @@ export default function Add_booking() {
               required
             />
           </div> */}
-           
+
         </div>
         <div class="row">
-        <div class="col">
+          <div class="col">
             <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-            <select  onChange={(e)=>setCityId(e.target.value)}>
+            <select onChange={(e) => setCityId(e.target.value)}>
               <option>---------Select City-------</option>
               {city.map(item => {
                 //  console.log("firstcity",city)
@@ -283,7 +278,7 @@ export default function Add_booking() {
               required
             />
           </div> */}
-         
+
           <div class="col">
             <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
             <input
@@ -299,19 +294,46 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-          <StyledFormLabel htmlFor="country">
+            <StyledFormLabel htmlFor="country">
               {" "}
               Business Area:{" "}
             </StyledFormLabel>
-            <select onChange={(event) => setBrand(event.target.value)}  value={brand}>
+            <select onChange={(event) => setBrand(event.target.value)} value={brand}>
               <option>---------Select Menu-------</option>
-                {houses.map(item => {
-                   return (<option key={item.value} value={item.value}>{item.text}</option>);
-                })}
-          </select>
+              {houses.map(item => {
+                return (<option key={item.value} value={item.value}>{item.text}</option>);
+              })}
+            </select>
           </div>
-        
-            <div class="col">
+
+          <div class="col">
+            <StyledFormLabel htmlFor="country"> Capacity: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="capacity"
+              // value={addtask.capacity}
+              name="capacity"
+            // onChange={getonChange}
+            // required
+            />
+          </div>
+         
+        </div>
+        <div className="row">
+        <div class="col">
+            <StyledFormLabel htmlFor="country"> Email: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="email"
+              // value={addtask.email}
+              name="email"
+            // onChange={getonChange}
+
+            />
+          </div>
+          <div class="col">
             <StyledFormLabel htmlFor="country"> Contact No: </StyledFormLabel>
             <input
               type="text"
@@ -323,14 +345,38 @@ export default function Add_booking() {
               required
             />
           </div>
-      
-</div>
-      
+          </div>
+        <div class="row">
+        <div class="col">
+            <StyledFormLabel htmlFor="country"> Mobile Number: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Mobile Number"
+              // value={addtask.mobile_no}
+              name="mobile_no"
+            // onChange={getonChange}
+            // required
+            />
+          </div>
+          <div class="col">
+            <StyledFormLabel htmlFor="country"> GST: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="gst"
+              // value={addtask.mobile_no}
+              name="gst"
+            // onChange={getonChange}
+            // required
+            />
+          </div>
+        </div>
         <button type="submit" class="btn btn-primary">
           Submit
         </button>
       </form>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

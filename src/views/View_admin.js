@@ -218,8 +218,7 @@ function View_admin() {
       </Table>
       {show && <Modal details={selectedData} handleClose={hideModal} />}
       <ToastContainer />
-
-    </div>
+      </div>
   )
 }
 
@@ -230,33 +229,34 @@ const Modal = ({ details, handleClose }) => {
     <div>
       <div class='modal display-block'>
         <div className="modal-main">
-          <div>
+          <div style={{display:"flex"}}>
             {/* <Sidebar /> */}
-            <h4>
-              <small> Admin</small>
-            </h4>
+         <p style={{margin:"14px"}}>Admin Details</p>
+            
           </div>
           <Grid item md={12} sm={8} xs={12} container spacing={1}>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{display:"flex"}}>
               {/* <Grid item sx={{ m: 1 }} md={5.7} xs={12}> */}
-              <StyledFormLabel htmlFor="country"> Name:{details.name}</StyledFormLabel>
+              <StyledFormLabel htmlFor="country" style={{marginLeft:"96px"}}> <b>Name:</b></StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{marginLeft:"53px"}}><b>{details.name}</b></StyledFormLabel>
 
               {/* </Grid> */}
             </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country" >
-                {" "}
-                Email :{" "} {details.email}
-              </StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{display:"flex"}}>
+              <StyledFormLabel htmlFor="country" ><b>Email :</b> </StyledFormLabel>
+              <StyledFormLabel htmlFor="details"  style={{marginLeft:"53px"}}><b>{details.email}</b></StyledFormLabel>
 
             </Grid>
           </Grid>
           <Grid item md={12} sm={8} xs={12} container spacing={1}>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> Designation: {details.designation} </StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{display:"flex"}}>
+              <StyledFormLabel htmlFor="country" style={{marginLeft:"67px"}}> <b>Designation: </b> </StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{marginLeft:"53px"}}>  {details.designation} </StyledFormLabel>
+              
             </Grid>
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-              <StyledFormLabel htmlFor="country"> Super Admin : {details.is_super_admin === 1 ? "yes" : "no"}  </StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={5.7} xs={12} style={{display:"flex"}}>
+              <StyledFormLabel htmlFor="country" style={{marginLeft:"-41px"}}><b> Super Admin : </b> </StyledFormLabel>
+              <StyledFormLabel htmlFor="details" style={{marginLeft:"53px"}}>  {details.is_super_admin === 1 ? "yes" : "no"}  </StyledFormLabel>
             </Grid>
           </Grid>
           <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
