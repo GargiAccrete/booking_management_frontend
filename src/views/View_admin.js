@@ -168,9 +168,10 @@ function View_admin() {
       <div>
         <h4>Admin |<small>Admin list</small></h4>
       </div>
-      <Table striped bordered hover style={{ marginLeft: "225px" }}>
+      <Table striped bordered hover style={{ marginLeft: "210px" }}>
         <thead>
           <tr>
+            <th>Id</th>
             <th>Name</th>
             <th>Email</th>
             <th>Designation</th>
@@ -179,13 +180,14 @@ function View_admin() {
           </tr>
         </thead>
         <tbody>
-          {admin.map((item) => (
+          {admin.map((item,index) => (
             <tr>
+              <td>{index+1}</td>
               <td>{item.name}</td>
               <td>{item.email}</td>
               <td>{item.designation===1?"Manager":"Sales Manager"}</td>
               <td>{item.is_super_admin === 1 ? "yes" : "no"}</td>
-              <td style={{ paddingRight: "90px" }}>
+              <td style={{ paddingRight: "167px" }}>
                 <button className="btn btn-warning" style={{ margin: "10px" }} onClick={() => hanldeClick(item)} >
                   <a href="#">
                     <VisibilityIcon />

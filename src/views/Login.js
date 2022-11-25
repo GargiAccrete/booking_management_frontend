@@ -57,6 +57,11 @@ export default function Login() {
                       <h1>Login </h1>
                       <form onSubmit={handleSubmit}>
                         <div class="form-outline mb-4">
+                        <label
+                            class="form-label"
+                            for="form2Example1">
+                          Email:
+                          </label>
                           <input
                             type="text"
                             id="form2Example1"
@@ -65,14 +70,15 @@ export default function Login() {
                             name="name"
                             onChange={(e)=>setName(e.target.value)}
                           />
-                          <label
-                            class="form-label"
-                            for="form2Example1">
-                          Email:
-                          </label>
-                        </div>
+                           </div>
 
                         <div class="form-outline mb-4">
+                        <label
+                            class="form-label"
+                            for="form2Example2"
+                          >
+                            Password:
+                          </label>
                           <input
                             type="phone_no"
                             id="form2Example2"
@@ -80,20 +86,6 @@ export default function Login() {
                             value={contact}
                             name="contact"
                             onChange={(e)=>setContact(e.target.value)}/>
-                          <label
-                            class="form-label"
-                            for="form2Example2"
-                          >
-                            Password:
-                          </label>
-                        </div>
-                        <div>
-                          <label>Remember me</label>
-                          <input
-                            type="checkbox"
-                            checked
-                            style={{ height: "20px" }}
-                          ></input>
                         </div>
                         <button
                           type="submit"
@@ -102,7 +94,7 @@ export default function Login() {
                           Sign in
                        
                         </button>
-                        {localStorage.getItem('name') && (
+                        {/* {localStorage.getItem('name') && (
                           <div>
                             Name: <p>{localStorage.getItem('name')}</p>
                           </div>
@@ -111,14 +103,12 @@ export default function Login() {
                           <div>
                             ContactSS: <p>{localStorage.getItem('contact')}</p>
                           </div>
-                        )}
+                        )} */}
                       </form>
                       <Footer />
                     </div>
                   </div>
-               
-              
-            </section>
+               </section>
           </div>
         </div>
         </div>

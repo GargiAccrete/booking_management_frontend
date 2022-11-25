@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { TextField, FormLabel, MenuItem, Grid, } from "@mui/material";
+import { Select,FormHelperText, FormControl, InputLabel } from '@material-ui/core';
 
 const StyledTextField = styled(TextField)(() => ({
     marginTop: "3px",
@@ -25,6 +26,7 @@ const StyledFormLabel = styled(FormLabel)(() => ({
     fontWeight: "500",
     color: "black",
     fontSize: "13px",
+    marginLeft: "-475px"
 }));
 
 
@@ -61,7 +63,7 @@ function Edit_admin() {
             name: upadmin.name,
             email: upadmin.email,
             password: upadmin.password,
-            designation:designation,
+            designation: designation,
             is_super_admin: upadmin.is_super_admin,
 
         };
@@ -115,17 +117,18 @@ function Edit_admin() {
                 </div>
                 <div class="row">
                     <div class="col">
-                        <StyledFormLabel htmlFor="country"> Designation: </StyledFormLabel>
-                       <select onChange={(event) => setDesignation(event.target.value)} value={designation}  > 
-                            <option>---------Select Menu-------</option>
-                            {Managerdata.map(item => {
-                                return (<option key={item.value} value={item.value}>{item.text}</option>);
-                            })}
-                        </select>
+                        <FormControl variant="outlined" style={{}}>
+                            <InputLabel style={{ color: "black" }} >Designation:</InputLabel>
+                            <Select onChange={(event) => setDesignation(event.target.value)} value={designation} style={{ width: "535px", height: "37px", marginTop: "30px" }}>
+                                {Managerdata.map(item => {
+                                    return (<option key={item.value} value={item.value}>{item.text}</option>);
+                                })}
+                            </Select>
+                            <FormHelperText>Select a Designation</FormHelperText>
+                        </FormControl>
                     </div>
-
                     <div class="col">
-                        <StyledFormLabel htmlFor="country"> Password : </StyledFormLabel>
+                        <StyledFormLabel htmlFor="country" style={{ marginLeft: "-449px" }}> Password : </StyledFormLabel>
                         <input
                             type="password"
                             class="form-control"
@@ -137,19 +140,19 @@ function Edit_admin() {
                     </div>
                 </div>
                 <div class="row">
-      <div class="col" style={{display:"flex"}}>
-            <StyledFormLabel htmlFor="country" style={{margin:"33px"}}>
-              {" "}
-             Is Super Admin? yes/no :{" "}
-            </StyledFormLabel>
-            <div style={{ display: "flex" }}>
-            <input name="optradio" type="hidden" value="0" />
-            <input name="optradio" type="checkbox" value="1"  onChange={getonChange} checked={upadmin.is_super_admin?1:0}/>
-            </div>
-            </div>
-      <div class="col">
-        </div>
-      </div>
+                    <div class="col" style={{ display: "flex" }}>
+                        <StyledFormLabel htmlFor="country" style={{ margin: "33px" }}>
+                            {" "}
+                            Is Super Admin? yes/no :{" "}
+                        </StyledFormLabel>
+                        <div style={{ display: "flex" }}>
+                            <input name="optradio" type="hidden" value="0" />
+                            <input name="optradio" type="checkbox" value="1" onChange={getonChange} checked={upadmin.is_super_admin ? 1 : 0} />
+                        </div>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">
                     Submit
                 </button>

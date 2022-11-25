@@ -56,7 +56,7 @@ export default function Sidebar() {
             aria-controls="collapseTwo"
           >
             <Link to="/View_booking" style={{ color: "White" }}>
-              Merchent
+              Merchant
             </Link>
             {/* <span>Products</span> */}
           </a>

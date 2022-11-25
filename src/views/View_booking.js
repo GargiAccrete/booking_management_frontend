@@ -179,21 +179,21 @@ export default function View_booking() {
           style={{ float: "right", margin: "20px" }}
         >
           {" "}
-          <AddIcon />Merchent
+          <AddIcon />Merchant
         </button>
       </div>
       <div>
-        <h4>Merchent |<small>Merchent list</small></h4>
+        <h4>Merchant |<small>Merchant list</small></h4>
       </div>
-      <Table striped bordered hover style={{ marginLeft: "225px" }}>
+      <Table striped bordered hover style={{ marginLeft: "210px" }}>
         <thead>
           <tr>
             <th>Id</th>
-            <th>legal_name</th>
+            <th>Legal Name</th>
             <th>State</th>
-            <th>city</th>
+            <th>City</th>
             <th>Contact Number</th>
-            <th>Action</th>
+            <th style={{ paddingRight: "167px" }}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -204,7 +204,7 @@ export default function View_booking() {
               <td>{item.state}</td>
               <td>{item.city}</td>
               <td>{item.contact_no}</td>
-              <td style={{ paddingRight: "90px" }}>
+              <td style={{ paddingRight: "167px" }}>
                 <button className="btn btn-warning" style={{ margin: "10px" }} onClick={() => hanldeClick(item.id)} >
                   <a href="#">
                     <VisibilityIcon />

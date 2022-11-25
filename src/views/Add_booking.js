@@ -9,6 +9,11 @@ import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { TextField, FormLabel, MenuItem, Grid } from "@mui/material";
+import { Select, FormHelperText, FormControl, Label, InputLabel } from '@material-ui/core';
+import { useForm } from "react-hook-form"; 
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 
 const header = {
   "Access-Control-Allow-Origin": "*",
@@ -32,18 +37,29 @@ const StyledFormLabel = styled(FormLabel)(() => ({
   fontWeight: "500",
   color: "black",
   fontSize: "13px",
+  marginLeft: "-460px"
 }));
+const schema = yup.object().shape({
+  legal_name: yup.string().required(),
+  address_line_1: yup.string().required(),
+});
 
 export default function Add_booking() {
+  const { register, Submit, formState: { errors }, reset } = useForm({
+    resolver: yupResolver(schema),
+  });
   const [addtask, setaddtask] = useState({});
   const [brand, setBrand] = useState("");
   const [type, setType] = useState("");
   const [stateid, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
   const [state, setState] = useState([]);
-  const [city, setCity] = useState([])
+  const [city, setCity] = useState([]);
+  const [showhide, setShowHide] = useState("");
+
 
   const history = useNavigate();
+ 
 
   const houses = [
     { value: '1', text: 'ParathaHouse' },
@@ -55,7 +71,7 @@ export default function Add_booking() {
     { value: '1', text: 'Ltd' },
     { value: '2', text: 'Pvt' },
     { value: '3', text: 'Llp' },
-  
+
   ];
 
 
@@ -64,14 +80,25 @@ export default function Add_booking() {
     setaddtask({ ...addtask, [event.target.name]: event.target.value });
     // console.log(addtask);
   };
+  const handleShowHide = (e) => {
+    setaddtask({
+      ...addtask,
+      brand_associate: e.target.value,
+    });
 
-  let handleSubmit = (e) => {
+    const getbrand = e.target.value;
+    console.log(getbrand)
+    setShowHide(getbrand);
+
+  }
+
+  let handleSubmit = (data,e) => {
     e.preventDefault();
     var data = {
-      business_type:type,
+      business_type: type,
       legal_name: addtask.legal_name,
       business_area: brand || "pppp",
-      brand_associate: addtask.optradio || "0",
+      brand_associate: addtask.brand_associate || "0",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: cityId,
@@ -102,7 +129,7 @@ export default function Add_booking() {
       console.log("result", result)
       setState(result.data);
       getCity()
-       // toast("listed Successfully!");
+      // toast("listed Successfully!");
       // console.log(data);
     });
 
@@ -137,69 +164,86 @@ export default function Add_booking() {
       <div>
         <Sidebar />
         <h4>
-          Merchent |<small>add merchent</small>
+          Merchant |<small>add merchant</small>
         </h4>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={Submit(handleSubmit)}>
         <div class="row">
-          <div class="col">
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-            <div class="col">
-            <StyledFormLabel htmlFor="country">
-              {" "}
-              Business Type:{" "}
-            </StyledFormLabel>
-            <select onChange={(event) =>
-               setType(event.target.value)} value={type}>
-              <option>---------Select Menu-------</option>
-              {businesstype.map(item => {
-                console.log("item",item)
-                return (<option key={item.value} value={item.value}>{item.text}</option>);
-              })}
-            </select>
-          </div>
-
-            </Grid>
-          </div>
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ margin: "33px" }}>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px" }}>
               {" "}
               Brand Associate :{" "}
             </StyledFormLabel>
-            <div style={{ display: "flex" }}>
-              <input name="optradio" type="hidden" value="0" />
-              <input name="optradio" type="checkbox" value="1" onChange={getonChange} />
-              {/* <input
+            <div style={{ display: "flex", marginTop: "17px" }}>
+              {/* <input name="optradio" type="hidden" value="0" />
+              <input name="optradio" type="checkbox" value="1" onChange={(e) => (handleShowHide(e))} /> */}
+              <input
                 type="checkbox"
                 id="yes"
-                name="optradio"
-                onChange={getonChange}
-                value="yes"
-                style={{ width: "20px" }}
+                name="brand_associate"
+                onChange={(e) => (handleShowHide(e))}
+                value={"1"}
+                style={{ width: "20px", marginTop: "10px" }}
               />
-               {" "}
+              {" "}
               <label
                 for="html"
-                style={{ marginLeft: "20px", marginRight: "100px" }}
+                style={{ marginLeft: "20px", marginRight: "100px", marginTop: "8px", fontSize: "13px" }}
               >
                 Yes
               </label>
-               {" "}
+              {" "}
               <input
                 type="checkbox"
                 id="no"
-                name="optradio"
-                value="No"
-                onChange={getonChange}
-                style={{ width: "20px" }}
+                name="brand_associate"
+                value={"0"}
+                onChange={(e) => (handleShowHide(e))}
+                style={{ width: "20px", marginTop: "8px" }}
               />
-                <label for="No">No</label> */}
+              <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label>
             </div>
           </div>
+          {showhide === "1" && (
+            <div class="col">
+              <StyledFormLabel htmlFor="country"> Legal Name: </StyledFormLabel>
+              <input
+              {...register("legal_name")}
+                type="text"
+                class="form-control"
+                placeholder="Enter Name"
+                value={addtask.legal_name}
+                name="legal_name"
+                onChange={getonChange}
+                required
+              />
+            </div>
+          )}
+          {showhide === "0" && (
+            <div class="col">
+
+            </div>
+          )}
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Legal Name: </StyledFormLabel>
+            <Grid item sx={{ m: 1 }} md={4} xs={12}>
+              <div class="col">
+                <FormControl variant="outlined" style={{}}>
+                  <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", fontSize: "13px", color: "black" }} > Business Type:</InputLabel>
+                  <Select onChange={(event) =>
+                    setType(event.target.value)} value={type} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "47px" }}>
+                    {businesstype.map(item => {
+                      return (<option key={item.value} value={item.value}>{item.text}</option>);
+                    })}
+                  </Select>
+                  <FormHelperText>Select Type</FormHelperText>
+                </FormControl>
+              </div>
+            </Grid>
+          </div>
+          <div class="col">
+            <StyledFormLabel htmlFor="country" style={{ marginTop: "19px", marginLeft: "-412px" }}> Legal Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -210,10 +254,13 @@ export default function Add_booking() {
               required
             />
           </div>
-
+          <p>{errors.legal_name?.message}</p>
+        </div>
+        <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Address1 : </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px" }}> Permanent Address: </StyledFormLabel>
             <input
+            {...register("address_line_1")}
               type="text"
               class="form-control"
               placeholder="address"
@@ -223,67 +270,45 @@ export default function Add_booking() {
               required
             />
           </div>
-        </div>
-        <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Address2: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" }}> Temporary Address: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
               placeholder="address"
               value={addtask.address_line_2}
               name="address_line_2"
-              required
-            />
-          </div>
-          <div class="col">
-            <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
-            <select onChange={(event) => handleState(event)} >
-              <option>---------Select State-------</option>
-              {state.map((item) => {
-
-                return (<option key={item.id} value={item.id}>{item.name}</option>);
-              })}
-            </select>
-          </div>
-          {/* <div class="col">
-            <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="city"
-              value={addtask.city}
-              name="city"
               onChange={getonChange}
               required
             />
-          </div> */}
-
+          </div>
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-            <select onChange={(e) => setCityId(e.target.value)}>
-              <option>---------Select City-------</option>
-              {city.map(item => {
-                //  console.log("firstcity",city)
-                return (<option key={item.id} value={item.id}>{item.city}</option>);
-              })}
-            </select>
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-22px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > State :</InputLabel>
+              <Select onChange={(event) => handleState(event)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {state.map((item) => {
+                  return (<option key={item.id} value={item.id}>{item.name}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select State</FormHelperText>
+            </FormControl>
           </div>
-          {/* <div class="col">
-            <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="state"
-              value={addtask.state}
-              name="state"
-              onChange={getonChange}
-              required
-            />
-          </div> */}
-
+          <div class="col">
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > City :</InputLabel>
+              <Select onChange={(e) => setCityId(e.target.value)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {city.map(item => {
+                  //  console.log("firstcity",city)
+                  return (<option key={item.id} value={item.id}>{item.city}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select City</FormHelperText>
+            </FormControl>
+          </div>
+        </div>
+        <div class="row">
           <div class="col">
             <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
             <input
@@ -296,22 +321,19 @@ export default function Add_booking() {
               required
             />
           </div>
-        </div>
-        <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country">
-              {" "}
-              Business Area:{" "}
-            </StyledFormLabel>
-            <select onChange={(event) =>
-               setBrand(event.target.value)} value={brand}>
-              <option>---------Select Menu-------</option>
-              {houses.map(item => {
-                return (<option key={item.value} value={item.value}>{item.text}</option>);
-              })}
-            </select>
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
+              <Select onChange={(event) =>
+                setBrand(event.target.value)} value={brand} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {houses.map(item => {
+                  return (<option key={item.value} value={item.value}>{item.text}</option>);
+                })}
+              </Select>
+            </FormControl>
           </div>
-
+        </div>
+        <div className="row">
           <div class="col">
             <StyledFormLabel htmlFor="country"> Capacity: </StyledFormLabel>
             <input
@@ -324,10 +346,7 @@ export default function Add_booking() {
             // required
             />
           </div>
-         
-        </div>
-        <div className="row">
-        <div class="col">
+          <div class="col">
             <StyledFormLabel htmlFor="country"> Email: </StyledFormLabel>
             <input
               type="text"
@@ -339,8 +358,10 @@ export default function Add_booking() {
 
             />
           </div>
+        </div>
+        <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Contact No: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country"> Landline No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -351,10 +372,8 @@ export default function Add_booking() {
               required
             />
           </div>
-          </div>
-        <div class="row">
-        <div class="col">
-            <StyledFormLabel htmlFor="country"> Mobile Number: </StyledFormLabel>
+          <div class="col">
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" }}> Mobile Number: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -365,6 +384,8 @@ export default function Add_booking() {
             // required
             />
           </div>
+        </div>
+        <div class="row">
           <div class="col">
             <StyledFormLabel htmlFor="country"> GST: </StyledFormLabel>
             <input
@@ -376,6 +397,8 @@ export default function Add_booking() {
             // onChange={getonChange}
             // required
             />
+          </div>
+          <div class="col">
           </div>
         </div>
         <button type="submit" class="btn btn-primary">

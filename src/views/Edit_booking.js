@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { TextField, FormLabel, MenuItem, Grid, } from "@mui/material";
+import { Select, FormHelperText, FormControl, InputLabel } from '@material-ui/core';
 const header = {
   "Access-Control-Allow-Origin": "*",
   "Content-type": "application/json",
@@ -30,11 +31,12 @@ const StyledFormLabel = styled(FormLabel)(() => ({
   fontWeight: "500",
   color: "black",
   fontSize: "13px",
+  marginLeft: "-460px"
 }));
 
 
 function Edit_booking() {
-  
+
   const [addtask, setaddtask] = useState({});
   const [brand, setBrand] = useState("");
   const [stateid, setStateId] = useState("");
@@ -42,6 +44,7 @@ function Edit_booking() {
   const [state, setState] = useState([]);
   const [city, setCity] = useState([])
   const [type, setType] = useState("");
+  const [showhide, setShowHide] = useState("");
   const navigate = useNavigate();
   const allparams = useParams()
   const houses = [
@@ -54,7 +57,7 @@ function Edit_booking() {
     { value: '1', text: 'Ltd' },
     { value: '2', text: 'Pvt' },
     { value: '3', text: 'Llp' },
-  
+
   ];
   useEffect(() => {
     getData();
@@ -81,7 +84,17 @@ function Edit_booking() {
       setCityId(result.data.city)
     })
   }
+  const handleShowHide = (e) => {
+    setaddtask({
+      ...addtask,
+      brand_associate: e.target.value,
+    });
 
+    const getbrand = e.target.value;
+    console.log(getbrand)
+    setShowHide(getbrand);
+
+  }
   let getState = async () => {
     console.log("inside function")
     Demo2.FetchCityData(`register/mapstate`).then((result) => {
@@ -91,7 +104,6 @@ function Edit_booking() {
       // toast("listed Successfully!");
       // console.log(data);
     });
-
   };
   const getCity = async () => {
     console.log("state_id")
@@ -105,17 +117,14 @@ function Edit_booking() {
     const getstateId = event.target.value;
     console.log("__", getstateId)
     setStateId(getstateId)
-
   }
-
-
   let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
       business_type: addtask.business_type,
       legal_name: addtask.legal_name,
       business_area: brand,
-      brand_associate: addtask.optradio || "0",
+      brand_associate: addtask.brand_associate || "0",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
       city: cityId,
@@ -137,69 +146,82 @@ function Edit_booking() {
       <div>
         <Sidebar />
         <h4>
-          Booking |<small>Edit booking</small>
+          Merchant |<small>Edit Merchant</small>
         </h4>
       </div>
-
       <form onSubmit={handleSubmit}>
         <div class="row">
-          <div class="col">
-            <Grid item sx={{ m: 1 }} md={5.7} xs={12}>
-            <StyledFormLabel htmlFor="country">
-              {" "}
-              Business Type:{" "}
-            </StyledFormLabel>
-            <select 
-            onChange={(event) =>
-               setType(event.target.value)} 
-               value={type} >
-              <option>---------Select Menu-------</option>
-              {businesstype.map(item => {
-                console.log("item",item)
-                return (<option key={item.value} value={item.value}>{item.text}</option>);
-              })}
-            </select>
-            </Grid>
-          </div>
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ margin: "33px" }}>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px" }}>
               {" "}
-              Brand Associate{" "}
+              Brand Associate :{" "}
             </StyledFormLabel>
-            <div style={{ display: "flex" }}>
-              <input name="optradio" type="hidden" value="0" />
-              <input name="optradio" type="checkbox" value="1" onChange={getonChange}  checked={addtask.brand_associate?1:0}/>
-              {/* <input
-                  type="radio"
-                  id="yes"
-                  name="optradio"
-                  onChange={getonChange}
-                  value="yes"
-                  style={{ width: "20px" }}
-                />
-                 {" "}
-                <label
-                  for="html"
-                  style={{ marginLeft: "20px", marginRight: "100px" }}
-                >
-                  Yes
-                </label>
-                 {" "}
-                <input
-                  type="radio"
-                  id="no"
-                  name="optradio"
-                  value="No"
-                  onChange={getonChange}
-                  style={{ width: "20px" }}
-                />
-                  <label for="No">No</label> */}
+            <div style={{ display: "flex", marginTop: "17px" }}>
+              {/* <input name="optradio" type="hidden" value="0" />
+              <input name="optradio" type="checkbox" value="1" onChange={(e) => (handleShowHide(e))} /> */}
+              <input
+                type="checkbox"
+                id="yes"
+                name="brand_associate"
+                onChange={(e) => (handleShowHide(e))}
+                value={"1"}
+                style={{ width: "20px", marginTop: "10px" }}
+              />
+              {" "}
+              <label
+                for="html"
+                style={{ marginLeft: "20px", marginRight: "100px", marginTop: "8px", fontSize: "13px" }}
+              >
+                Yes
+              </label>
+              {" "}
+              <input
+                type="checkbox"
+                id="no"
+                name="brand_associate"
+                value={"0"}
+                onChange={(e) => (handleShowHide(e))}
+                style={{ width: "20px", marginTop: "8px" }}
+              />
+              <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label>
             </div>
           </div>
+          {showhide === "1" && (
+            <div class="col">
+              <StyledFormLabel htmlFor="country" > Legal Name: </StyledFormLabel>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Name"
+                value={addtask.legal_name}
+                name="legal_name"
+                onChange={getonChange}
+                required
+              />
+            </div>
+          )}
+          {showhide === "0" && (
+            <div class="col">
+
+            </div>
+          )}
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Legal Name: </StyledFormLabel>
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "22px" }} > Business Type:</InputLabel>
+              <Select onChange={(event) =>
+                setType(event.target.value)}
+                value={type} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "47px" }}>
+                {businesstype.map(item => {
+                  return (<option key={item.value} value={item.value}>{item.text}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select Type</FormHelperText>
+            </FormControl>
+          </div>
+          <div class="col">
+            <StyledFormLabel htmlFor="country" style={{marginTop:"19px",marginLeft:"-405px"}}> Legal Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -210,8 +232,10 @@ function Edit_booking() {
               required
             />
           </div>
+        </div>
+        <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Address1 : </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px" }}> Permanent Address : </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -222,10 +246,9 @@ function Edit_booking() {
               required
             />
           </div>
-        </div>
-        <div class="row">
+
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Address2: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" }}> Temporary Address: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -236,50 +259,35 @@ function Edit_booking() {
               required
             />
           </div>
+        </div>
+
+        <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> State </StyledFormLabel>
-            {console.log(addtask.state)}
-            <select 
-              onChange={(event) => handleState(event)}
-              value={stateid}
-              >
-              <option>---------Select State-------</option>
-              {state.map((item) => {
-                 return (<option key={item.id} value={item.id}>{item.name}</option>);
-              })}
-            </select>
-            {/* <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="city"
-                value={addtask.city}
-                name="city"
-                onChange={getonChange}
-                required
-              /> */}
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > State :</InputLabel>
+              <Select onChange={(event) => handleState(event)}
+                value={stateid} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {state.map((item) => {
+                  return (<option key={item.id} value={item.id}>{item.name}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select State</FormHelperText>
+            </FormControl>
+          </div>
+          <div class="col">
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-33px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > City :</InputLabel>
+              <Select onChange={(e) => setCityId(e.target.value)} value={cityId} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {city.map(item => {
+                  //  console.log("firstcity",city)
+                  return (<option key={item.id} value={item.id}>{item.city}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select City</FormHelperText>
+            </FormControl>
           </div>
         </div>
         <div class="row">
-          <div class="col">
-            <StyledFormLabel htmlFor="country"> City : </StyledFormLabel>
-            <select onChange={(e) => setCityId(e.target.value)} value={cityId} >
-              <option>---------Select City-------</option>
-              {city.map(item => {
-                //  console.log("firstcity",city)
-                return (<option key={item.id} value={item.id}>{item.city}</option>);
-              })}
-            </select>
-            {/* <input
-                type="text"
-                class="form-control"
-                placeholder="state"
-                value={addtask.state}
-                name="state"
-                onChange={getonChange}
-                required
-              /> */}
-          </div>
           <div class="col">
             <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
             <input
@@ -292,26 +300,48 @@ function Edit_booking() {
               required
             />
           </div>
+          <div class="col">
+            <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ color: "black", marginLeft: "-33px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
+              <Select onChange={(event) =>
+                setBrand(event.target.value)}
+                value={brand} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {houses.map(item => {
+                  return (<option key={item.value} value={item.value}>{item.text}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select City</FormHelperText>
+            </FormControl>
+          </div>
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country">
-              {" "}
-              Busineess Area:{" "}
-            </StyledFormLabel>
-            <select 
-            onChange={(event) =>
-               setBrand(event.target.value)} 
-               value={brand} >
-              <option>---------Select Menu-------</option>
-              {houses.map(item => {
-                console.log("item",item)
-                return (<option key={item.value} value={item.value}>{item.text}</option>);
-              })}
-            </select>
+            <StyledFormLabel htmlFor="country"> Capacity: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="capacity"
+              // value={addtask.capacity}
+              name="capacity"
+            // onChange={getonChange}
+            // required
+            />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Contact No: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country"> Email: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="email"
+              // value={addtask.email}
+              name="email"
+            // onChange={getonChange}
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" }}>Landline No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -321,6 +351,34 @@ function Edit_booking() {
               onChange={getonChange}
               required
             />
+          </div>
+          <div class="col">
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" }}> Mobile Number: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Mobile Number"
+              // value={addtask.mobile_no}
+              name="mobile_no"
+            // onChange={getonChange}
+            // required
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <StyledFormLabel htmlFor="country"> GST: </StyledFormLabel>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="gst"
+              // value={addtask.mobile_no}
+              name="gst"
+            // onChange={getonChange}
+            // required
+            />
+          </div>
+          <div class="col">
           </div>
         </div>
         <button type="submit" class="btn btn-primary">
