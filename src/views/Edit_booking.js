@@ -152,7 +152,7 @@ function Edit_booking() {
       <form onSubmit={handleSubmit}>
         <div class="row">
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px" }}>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px",color:"black" }}>
               {" "}
               Brand Associate :{" "}
             </StyledFormLabel>
@@ -209,7 +209,7 @@ function Edit_booking() {
         <div class="row">
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "22px" }} > Business Type:</InputLabel>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "22px" ,color:"black"}} > Business Type:</InputLabel>
               <Select onChange={(event) =>
                 setType(event.target.value)}
                 value={type} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "47px" }}>
@@ -221,7 +221,7 @@ function Edit_booking() {
             </FormControl>
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{marginTop:"19px",marginLeft:"-405px"}}> Legal Name: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{marginTop:"19px",marginLeft:"-405px",color:"black"}}> Legal Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -235,7 +235,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px" }}> Permanent Address : </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px",color:"black" }}> Permanent Address : </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -248,7 +248,7 @@ function Edit_booking() {
           </div>
 
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" }}> Temporary Address: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black"}}> Temporary Address: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -264,7 +264,7 @@ function Edit_booking() {
         <div class="row">
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > State :</InputLabel>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px",color:"black", fontSize: "13px" }} > State :</InputLabel>
               <Select onChange={(event) => handleState(event)}
                 value={stateid} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {state.map((item) => {
@@ -276,7 +276,7 @@ function Edit_booking() {
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-33px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > City :</InputLabel>
+              <InputLabel style={{ color: "black", marginLeft: "-33px", marginBottom: "5px",color:"black", marginTop: "-16px", fontSize: "13px" }} > City :</InputLabel>
               <Select onChange={(e) => setCityId(e.target.value)} value={cityId} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {city.map(item => {
                   //  console.log("firstcity",city)
@@ -289,7 +289,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> PinCode: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -302,7 +302,7 @@ function Edit_booking() {
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-33px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
+              <InputLabel style={{ color: "black", marginLeft: "-33px",color:"black", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
               <Select onChange={(event) =>
                 setBrand(event.target.value)}
                 value={brand} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
@@ -316,7 +316,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Capacity: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Capacity: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -328,7 +328,7 @@ function Edit_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Email: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Email: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -341,7 +341,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" }}>Landline No: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" ,color:"black"}}>Landline No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -353,7 +353,7 @@ function Edit_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" }}> Mobile Number: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" ,color:"black"}}> Mobile Number: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -367,7 +367,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> GST: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> GST: </StyledFormLabel>
             <input
               type="text"
               class="form-control"

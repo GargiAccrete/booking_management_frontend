@@ -79,8 +79,7 @@ const PutData = (endpoint,data) =>  {
     try {
         // console.log(data);
         let options = {
-
-            url : `http://localhost:3002/${endpoint}`,
+       url : `http://localhost:3002/${endpoint}`,
             data:data,
             headers : {
                 'content-type': 'application/json',

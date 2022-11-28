@@ -133,9 +133,8 @@ export default function View_booking() {
     getData(search);
   }, []);
   const logout = () => {
-    localStorage.removeItem('name');
-    localStorage.removeItem('contact');
-    window.open("/")
+    localStorage.removeItem('authToken');
+    navigate("/")
   }
 
   return (

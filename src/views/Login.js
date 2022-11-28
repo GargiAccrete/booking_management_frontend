@@ -7,8 +7,8 @@ import Demo2 from "../services/Demo2";
 import Footer from "../components/Footer";
 
 export default function Login() {
-  const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const header = {
     "Access-Control-Allow-Origin": "*",
     "Content-type": "application/json",
@@ -16,22 +16,24 @@ export default function Login() {
   let Navigate = useNavigate();
 
   const handleSubmit=(e) =>{
+    console.log("inside")
    e.preventDefault();
     var data = {
-        'name': name,
-        'contact': contact,
+        'email': email,
+        'password': password,
       }
-    Demo2.login('login/login',data).then((response) => {
-      localStorage.setItem('name', name);
-      localStorage.setItem('contact', contact);
-      window.open("/view_booking")
-      // setTimeout(()=>{
-      //   Navigate("/home")
-      // })
+    Demo2.login('loginUser/login',data).then((res) => {
+    console.log("hiiiiiii")
+      // window.open("/view_booking")
+      setTimeout(()=>{
+        Navigate("/view_booking")
+      },2000)
       // return Navigate(from, { replace: true })
       }).catch(e =>{
         console.log(e)
       })
+
+ 
     
 }
 
@@ -66,9 +68,9 @@ export default function Login() {
                             type="text"
                             id="form2Example1"
                             class="form-control"
-                            value={name}
-                            name="name"
-                            onChange={(e)=>setName(e.target.value)}
+                            value={email}
+                            name="email"
+                            onChange={(e)=>setEmail(e.target.value)}
                           />
                            </div>
 
@@ -80,12 +82,12 @@ export default function Login() {
                             Password:
                           </label>
                           <input
-                            type="phone_no"
+                            type="password"
                             id="form2Example2"
                             class="form-control"
-                            value={contact}
-                            name="contact"
-                            onChange={(e)=>setContact(e.target.value)}/>
+                            value={password}
+                            name="password"
+                            onChange={(e)=>setPassword(e.target.value)}/>
                         </div>
                         <button
                           type="submit"

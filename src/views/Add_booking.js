@@ -8,8 +8,9 @@ import Sidebar from "../components/Sidebar";
 import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { TextField, FormLabel, MenuItem, Grid } from "@mui/material";
+import {  FormLabel, MenuItem, Grid } from "@mui/material";
 import { Select, FormHelperText, FormControl, Label, InputLabel } from '@material-ui/core';
+import { Autocomplete ,TextField} from "@mui/material";
 import { useForm } from "react-hook-form"; 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -35,7 +36,7 @@ const StyledTextField = styled(TextField)(() => ({
 const StyledFormLabel = styled(FormLabel)(() => ({
   display: "block",
   fontWeight: "500",
-  color: "black",
+
   fontSize: "13px",
   marginLeft: "-460px"
 }));
@@ -45,7 +46,7 @@ const schema = yup.object().shape({
 });
 
 export default function Add_booking() {
-  const { register, Submit, formState: { errors }, reset } = useForm({
+  const { register, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const [addtask, setaddtask] = useState({});
@@ -56,12 +57,8 @@ export default function Add_booking() {
   const [state, setState] = useState([]);
   const [city, setCity] = useState([]);
   const [showhide, setShowHide] = useState("");
-
-
   const history = useNavigate();
- 
-
-  const houses = [
+ const houses = [
     { value: '1', text: 'ParathaHouse' },
     { value: '2', text: 'BiryaniHouse' },
     { value: '3', text: 'Snacks' },
@@ -92,7 +89,7 @@ export default function Add_booking() {
 
   }
 
-  let handleSubmit = (data,e) => {
+  let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
       business_type: type,
@@ -167,17 +164,19 @@ export default function Add_booking() {
           Merchant |<small>add merchant</small>
         </h4>
       </div>
-      <form onSubmit={Submit(handleSubmit)}>
+      <form onSubmit={handleSubmit}>
         <div class="row">
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px" }}>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px",color:"black" }}>
               {" "}
               Brand Associate :{" "}
             </StyledFormLabel>
             <div style={{ display: "flex", marginTop: "17px" }}>
-              {/* <input name="optradio" type="hidden" value="0" />
-              <input name="optradio" type="checkbox" value="1" onChange={(e) => (handleShowHide(e))} /> */}
-              <input
+              <input name="brand_associate" type="radio" value="0"  onChange={(e) => (handleShowHide(e))} />
+              <label style={{margin:"10px"}}>No</label>
+              <input name="brand_associate" type="radio" value="1" onChange={(e) => (handleShowHide(e))} />
+              <label style={{margin:"10px"}}>yes</label>
+              {/* <input
                 type="checkbox"
                 id="yes"
                 name="brand_associate"
@@ -201,7 +200,7 @@ export default function Add_booking() {
                 onChange={(e) => (handleShowHide(e))}
                 style={{ width: "20px", marginTop: "8px" }}
               />
-              <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label>
+              <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label> */}
             </div>
           </div>
           {showhide === "1" && (
@@ -228,22 +227,23 @@ export default function Add_booking() {
         <div class="row">
           <div class="col">
             <Grid item sx={{ m: 1 }} md={4} xs={12}>
+              {/* <Autocomplete option={businesstype} renderInput={(params)=><TextField {...params} />}/> */}
               <div class="col">
                 <FormControl variant="outlined" style={{}}>
-                  <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", fontSize: "13px", color: "black" }} > Business Type:</InputLabel>
+                  <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", fontSize: "13px",color:"black"}} > Business Type:</InputLabel>
                   <Select onChange={(event) =>
-                    setType(event.target.value)} value={type} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "47px" }}>
+                    setType(event.target.value)} value={type} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "47px" ,marginBottom:"-45px"}}>
                     {businesstype.map(item => {
                       return (<option key={item.value} value={item.value}>{item.text}</option>);
                     })}
                   </Select>
-                  <FormHelperText>Select Type</FormHelperText>
+               
                 </FormControl>
               </div>
             </Grid>
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginTop: "19px", marginLeft: "-412px" }}> Legal Name: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginTop: "19px", marginLeft: "-412px" ,color:"black"}}> Legal Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -258,7 +258,7 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px" }}> Permanent Address: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px" ,color:"black"}}> Permanent Address: </StyledFormLabel>
             <input
             {...register("address_line_1")}
               type="text"
@@ -271,7 +271,7 @@ export default function Add_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" }}> Temporary Address: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black"}}> Temporary Address: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -286,7 +286,7 @@ export default function Add_booking() {
         <div class="row">
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-22px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > State :</InputLabel>
+              <InputLabel style={{ marginLeft: "-22px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px",color:"black" }} > State :</InputLabel>
               <Select onChange={(event) => handleState(event)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {state.map((item) => {
                   return (<option key={item.id} value={item.id}>{item.name}</option>);
@@ -297,7 +297,7 @@ export default function Add_booking() {
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > City :</InputLabel>
+              <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px",color:"black" }} > City :</InputLabel>
               <Select onChange={(e) => setCityId(e.target.value)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {city.map(item => {
                   //  console.log("firstcity",city)
@@ -310,7 +310,7 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> PinCode: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> PinCode: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -323,7 +323,7 @@ export default function Add_booking() {
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
+              <InputLabel style={{  marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" ,color:"black"}} > Business Area: :</InputLabel>
               <Select onChange={(event) =>
                 setBrand(event.target.value)} value={brand} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {houses.map(item => {
@@ -335,7 +335,7 @@ export default function Add_booking() {
         </div>
         <div className="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Capacity: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Capacity: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -347,7 +347,7 @@ export default function Add_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Email: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Email: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -361,7 +361,7 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> Landline No: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Landline No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -373,7 +373,7 @@ export default function Add_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" }}> Mobile Number: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px",color:"black" }}> Mobile Number: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -387,7 +387,7 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country"> GST: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black"}}> GST: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
