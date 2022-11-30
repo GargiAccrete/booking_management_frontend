@@ -22,7 +22,7 @@ export default function Login() {
         'email': email,
         'password': password,
       }
-    Demo2.login('loginUser/login',data).then((res) => {
+    Demo2.login('login/login',data).then((res) => {
     console.log("hiiiiiii")
       // window.open("/view_booking")
       setTimeout(()=>{

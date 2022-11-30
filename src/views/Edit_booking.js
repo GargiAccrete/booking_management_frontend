@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
-import { TextField, FormLabel, MenuItem, Grid, } from "@mui/material";
+import { TextField, FormLabel, MenuItem, Grid, Autocomplete} from "@mui/material";
 import { Select, FormHelperText, FormControl, InputLabel } from '@material-ui/core';
 const header = {
   "Access-Control-Allow-Origin": "*",
@@ -48,15 +48,15 @@ function Edit_booking() {
   const navigate = useNavigate();
   const allparams = useParams()
   const houses = [
-    { value: '1', text: 'ParathaHouse' },
-    { value: '2', text: 'BiryaniHouse' },
-    { value: '3', text: 'Snacks' },
-    { value: '4', text: 'VadapavFactory' }
+    { value: '1', label: 'ParathaHouse' },
+    { value: '2', label: 'BiryaniHouse' },
+    { value: '3', label: 'Snacks' },
+    { value: '4', label: 'VadapavFactory' }
   ];
   const businesstype = [
-    { value: '1', text: 'Ltd' },
-    { value: '2', text: 'Pvt' },
-    { value: '3', text: 'Llp' },
+    { value: '1', label: 'Ltd' },
+    { value: '2', label: 'Pvt' },
+    { value: '3', label: 'Llp' },
 
   ];
   useEffect(() => {
@@ -75,11 +75,42 @@ function Edit_booking() {
     // console.log(addtask);
   };
   let getData = () => {
+    let  data="Ltd";
+    let data2="Pvt";
+    let data3="Llp"
+    let house1="ParathaHouse";
+    let house2="BiryaniHouse";
+    let house3="Snacks";
+    let house4="VadapavFactory";
     Demo2.FetchData(`register/${allparams.id}/view`).then((result) => {
-      console.log("result", result)
+      console.log("result", result.data.business_type)
       setaddtask(result.data)
-      setType(result.data.business_type)
-      setBrand(result.data.business_area)
+      if( result.data.business_type==1){ 
+        console.log("hiii")
+        setType(data)
+       }
+      else if( result.data.business_type==2){ 
+        console.log("hiii")
+        setType(data2)
+       }
+       else{ 
+        console.log("hiii")
+        setType(data3)
+       }
+      if(result.data.business_area== 1)
+      {
+        setBrand(house1)
+      }
+      else if(result.data.business_area== 2){
+        setBrand(house2)
+       }
+      else if(result.data.business_area== 3){
+        setBrand(house3)
+      }
+      else{
+        setBrand(house4)
+      }
+      // setBrand(result.data.business_area)
       setStateId(result.data.state)
       setCityId(result.data.city)
     })
@@ -121,9 +152,9 @@ function Edit_booking() {
   let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
-      business_type: addtask.business_type,
+      business_type: type.value,
       legal_name: addtask.legal_name,
-      business_area: brand,
+      business_area: brand.value,
       brand_associate: addtask.brand_associate || "0",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
@@ -152,14 +183,16 @@ function Edit_booking() {
       <form onSubmit={handleSubmit}>
         <div class="row">
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px",color:"black" }}>
-              {" "}
-              Brand Associate :{" "}
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px",color:"black",fontSize:"13px" }}>
+            
+          Associate with brand ?:
             </StyledFormLabel>
             <div style={{ display: "flex", marginTop: "17px" }}>
-              {/* <input name="optradio" type="hidden" value="0" />
-              <input name="optradio" type="checkbox" value="1" onChange={(e) => (handleShowHide(e))} /> */}
-              <input
+            <input name="brand_associate" type="radio" value="0"  onChange={(e) => (handleShowHide(e))} />
+              <label style={{margin:"10px",fontSize:"13px"}}>No</label>
+              <input name="brand_associate" type="radio" value="1" onChange={(e) => (handleShowHide(e))} />
+              <label style={{margin:"10px",fontSize:"13px"}}>yes</label>
+              {/* <input
                 type="checkbox"
                 id="yes"
                 name="brand_associate"
@@ -183,18 +216,17 @@ function Edit_booking() {
                 onChange={(e) => (handleShowHide(e))}
                 style={{ width: "20px", marginTop: "8px" }}
               />
-              <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label>
+              <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label> */}
             </div>
           </div>
           {showhide === "1" && (
             <div class="col">
-              <StyledFormLabel htmlFor="country" > Legal Name: </StyledFormLabel>
+              <StyledFormLabel htmlFor="country" style={{fontSize:"13px",color:"black",marginLeft:"-480px"}} > Brand: </StyledFormLabel>
               <input
                 type="text"
                 class="form-control"
-                placeholder="Enter Name"
-                value={addtask.legal_name}
-                name="legal_name"
+                value={addtask.brand_name}
+                name="brand_name"
                 onChange={getonChange}
                 required
               />
@@ -208,7 +240,24 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <FormControl variant="outlined" style={{}}>
+          <InputLabel style={{ color: "black", marginLeft: "-433px", fontSize:"13px",marginBottom: "5px", marginTop: "22px" ,color:"black"}} > Business Type:</InputLabel>
+          <Autocomplete
+                disablePortal
+                options={businesstype}
+                isOptionEqualToValue={(option, value) => option.label }
+                // getOptionLabel={(option) => option.text || ""}
+                // getOptionSelected={(option, value) =>{
+                //     console.log("first",option)
+                // }}
+                
+                value={type}
+                onChange={(e,newValue) =>{
+                    setType(newValue)
+                    }}
+                    // clearOnBlur={false}
+                 renderInput={(params) => <TextField {...params} size="small"/>}
+                />
+            {/* <FormControl variant="outlined" style={{}}>
               <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "22px" ,color:"black"}} > Business Type:</InputLabel>
               <Select onChange={(event) =>
                 setType(event.target.value)}
@@ -218,10 +267,10 @@ function Edit_booking() {
                 })}
               </Select>
               <FormHelperText>Select Type</FormHelperText>
-            </FormControl>
+            </FormControl> */}
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{marginTop:"19px",marginLeft:"-405px",color:"black"}}> Legal Name: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{marginTop:"19px",marginLeft:"-433px",color:"black",fontSize:"13px"}}> Legal Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -235,7 +284,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px",color:"black" }}> Permanent Address : </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px",color:"black",fontSize:"13px" }}> Permanent Address : </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -248,7 +297,7 @@ function Edit_booking() {
           </div>
 
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black"}}> Temporary Address: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black",fontSize:"13px"}}> Temporary Address: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -264,7 +313,7 @@ function Edit_booking() {
         <div class="row">
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px",color:"black", fontSize: "13px" }} > State :</InputLabel>
+              <InputLabel style={{ color: "black", marginLeft: "-20px", marginBottom: "5px",fontSize:"13px", marginTop: "-16px",color:"black" }} > State :</InputLabel>
               <Select onChange={(event) => handleState(event)}
                 value={stateid} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {state.map((item) => {
@@ -276,7 +325,7 @@ function Edit_booking() {
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ color: "black", marginLeft: "-33px", marginBottom: "5px",color:"black", marginTop: "-16px", fontSize: "13px" }} > City :</InputLabel>
+              <InputLabel style={{ color: "black", marginLeft: "-33px",fontSize:"13px", marginBottom: "5px",color:"black" }} > City :</InputLabel>
               <Select onChange={(e) => setCityId(e.target.value)} value={cityId} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {city.map(item => {
                   //  console.log("firstcity",city)
@@ -289,7 +338,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> PinCode: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px"}}> Pincode: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -301,7 +350,26 @@ function Edit_booking() {
             />
           </div>
           <div class="col">
-            <FormControl variant="outlined" style={{}}>
+          <InputLabel style={{ color: "black", marginLeft: "-433px",color:"black", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
+          <Autocomplete
+              disablePortal
+              selectOnFocus
+              select
+              options={houses}
+                isOptionEqualToValue={(option, value) => option.label }
+                // getOptionLabel={(option) => option.text || ""}
+                // getOptionSelected={(option, value) =>{
+                //     console.log("first",option)
+                // }}
+                sx={{marginTop:3.5}}
+                value={brand}
+                onChange={(e,newValue) =>{
+                  setBrand(newValue)
+                    }}
+                    // clearOnBlur={false}
+                 renderInput={(params) => <TextField {...params} size="small"/>}
+                />
+            {/* <FormControl variant="outlined" style={{}}>
               <InputLabel style={{ color: "black", marginLeft: "-33px",color:"black", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" }} > Business Area: :</InputLabel>
               <Select onChange={(event) =>
                 setBrand(event.target.value)}
@@ -311,12 +379,12 @@ function Edit_booking() {
                 })}
               </Select>
               <FormHelperText>Select City</FormHelperText>
-            </FormControl>
+            </FormControl> */}
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Capacity: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px"}}> Capacity: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -328,7 +396,7 @@ function Edit_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Email: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px",marginLeft:"-433px"}}> Email: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -341,7 +409,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" ,color:"black"}}>Landline No: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-433px" ,color:"black",fontSize:"13px"}}>Landline No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -353,7 +421,7 @@ function Edit_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px" ,color:"black"}}> Mobile Number: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-433px" ,color:"black",fontSize:"13px"}}> Mobile Number: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -367,7 +435,7 @@ function Edit_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> GST: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px", marginLeft: "-480px"}}> GST: </StyledFormLabel>
             <input
               type="text"
               class="form-control"

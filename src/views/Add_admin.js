@@ -8,8 +8,12 @@ import Sidebar from "../components/Sidebar";
 import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { TextField, FormLabel, Grid } from "@mui/material";
+import { FormLabel, Grid } from "@mui/material";
 import { Select, MenuItem, FormHelperText, FormControl, InputLabel } from '@material-ui/core';
+// import Autocomplete from 'react-autocomplete'
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+
 
 const StyledTextField = styled(TextField)(() => ({
   marginTop: "3px",
@@ -34,13 +38,14 @@ function Add_admin() {
   const [addadmin, setaddAdmin] = useState({});
   const [designation, setDesignation] = useState({})
   const [selected, setSelected] = useState('');
+  const [value, setValue] = useState('');
   const selectionChangeHandler = (event) => {
     setSelected(event.target.value);
   };
 
   const Managerdata = [
-    { value: '1', text: 'Manager ' },
-    { value: '2', text: 'sales Manager' },
+    { id: '1', label: 'Manager ' },
+    { id: '2', label: 'sales Manager' },
     // {value: '3',   text: 'Manager2'  },
 
   ];
@@ -57,7 +62,7 @@ function Add_admin() {
       name: addadmin.name,
       email: addadmin.email,
       password: addadmin.password,
-      designation: designation,
+      designation: value.id,
       is_super_admin: addadmin.optradio || '0',
 
     };
@@ -79,11 +84,10 @@ function Add_admin() {
         </h4>
       </div>
       <form onSubmit={handleSubmit}>
-     
         <div class="row">
           <div class="col">
             {/* <Grid item sx={{ m: 1 }} md={5.7} xs={12}> */}
-            <StyledFormLabel htmlFor="country"> Name: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ fontSize: "13px", color: "black" }}> Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -96,7 +100,7 @@ function Add_admin() {
             {/* </Grid> */}
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" >
+            <StyledFormLabel htmlFor="country" style={{ fontSize: "13px", color: "black" }} >
               {" "}
               Email :{" "}
             </StyledFormLabel>
@@ -114,15 +118,23 @@ function Add_admin() {
         </div>
         <div class="row">
           <div class="col">
-            <FormControl variant="outlined" style={{ }}>
-              <InputLabel style={{color:"black"}} >Designation:</InputLabel>
-              <Select onChange={(event) => setDesignation(event.target.value)} value={designation} style={{ width: "535px" ,height:"37px",marginTop:"30px"}}>
-                {Managerdata.map(item => {
-                  return (<option key={item.value} value={item.value}>{item.text}</option>);
-                })}
-              </Select>
-              <FormHelperText>Select a Designation</FormHelperText>
-            </FormControl>
+            <StyledFormLabel htmlFor="country" style={{ fontSize: "13px", color: "black",marginLeft:"-440px" }}>
+              {" "}
+              Designation :{" "}
+            </StyledFormLabel>
+            <Autocomplete
+              //  sx={{
+              //   width: 530}}
+              // sx={{height: 15}}
+              options={Managerdata}
+              value={value}
+              onChange={(e, newValue) => {
+                setValue(newValue)
+              }}
+
+              renderInput={(params) => <TextField {...params} size="small" />}
+            />
+
           </div>
           {/* <div class="col">
             <StyledFormLabel htmlFor="country" style={{ marginLeft: "-449px" }}> Designation: </StyledFormLabel>
@@ -135,7 +147,7 @@ function Add_admin() {
           </div> */}
 
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-449px" }}> Password : </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-449px", fontSize: "13px", color: "black" }}> Password : </StyledFormLabel>
             <input
               type="password"
               class="form-control"
@@ -149,7 +161,7 @@ function Add_admin() {
         </div>
         <div class="row">
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ margin: "33px", marginLeft: "3px" }}>
+            <StyledFormLabel htmlFor="country" style={{ margin: "33px", marginLeft: "3px", fontSize: "13px", color: "black" }}>
               {" "}
               Is Super Admin? yes/no :{" "}
             </StyledFormLabel>
@@ -161,10 +173,6 @@ function Add_admin() {
           <div class="col">
           </div>
         </div>
-
-
-
-
         <button type="submit" class="btn btn-primary">
           Submit
         </button>
@@ -175,3 +183,33 @@ function Add_admin() {
 }
 
 export default Add_admin
+
+{/* <Autocomplete
+            //  items={Managerdata.map(option => option.name_en + ` (${option.name_native})`)}
+              items={Managerdata}
+              shouldItemRender={(item, value
+              ) => item.label.toLowerCase()
+                .indexOf(value.toLowerCase()) > -1}
+              getItemValue={item => item.label}
+              renderItem={(item, isHighlighted) =>
+                <div style={{
+                  background: isHighlighted ?
+                    '#bcf5bc' : 'white'
+                }}
+                  key={item.value}>
+                  {item.label}
+                </div>
+              }
+              value={value}
+              onChange={e => setValue(e.target.value)}
+              onSelect={(val) => 
+              setValue(val)
+              }
+              inputProps={{
+                style: {
+                  width: '530px', height: '35px',
+                  border: '1px outset lightgray'
+                },
+                placeholder: 'Search Designation'
+              }}
+            /> */}

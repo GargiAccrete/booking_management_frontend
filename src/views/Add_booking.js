@@ -13,6 +13,7 @@ import { Select, FormHelperText, FormControl, Label, InputLabel } from '@materia
 import { Autocomplete ,TextField} from "@mui/material";
 import { useForm } from "react-hook-form"; 
 import { yupResolver } from "@hookform/resolvers/yup";
+import AddIcon from '@mui/icons-material/Add';
 import * as yup from "yup";
 
 
@@ -55,24 +56,29 @@ export default function Add_booking() {
   const [stateid, setStateId] = useState("");
   const [cityId, setCityId] = useState("");
   const [state, setState] = useState([]);
+  const [listdata, setListdata] = useState([]);
   const [city, setCity] = useState([]);
   const [showhide, setShowHide] = useState("");
   const history = useNavigate();
  const houses = [
-    { value: '1', text: 'ParathaHouse' },
-    { value: '2', text: 'BiryaniHouse' },
-    { value: '3', text: 'Snacks' },
-    { value: '4', text: 'VadapavFactory' }
+    { id: '1', text: 'ParathaHouse' },
+    { id: '2', text: 'BiryaniHouse' },
+    { id: '3', text: 'Snacks' },
+    { id: '4', text: 'VadapavFactory' }
   ];
   const businesstype = [
-    { value: '1', text: 'Ltd' },
-    { value: '2', text: 'Pvt' },
-    { value: '3', text: 'Llp' },
+    { id: '1', label: 'Ltd' },
+    { id: '2', label: 'Pvt' },
+    { id: '3', label: 'Llp' },
 
   ];
-
-
-  let getonChange = (event) => {
+ const list= [
+    { id: 1, label: "1" },
+    { id: 2, label: "2" },
+    { id: 3, label: "3" },
+    { id: 4, label: "4" }
+  ]
+let getonChange = (event) => {
     // console.log(event.target.value);
     setaddtask({ ...addtask, [event.target.name]: event.target.value });
     // console.log(addtask);
@@ -92,9 +98,9 @@ export default function Add_booking() {
   let handleSubmit = (e) => {
     e.preventDefault();
     var data = {
-      business_type: type,
+      business_type: type.id,
       legal_name: addtask.legal_name,
-      business_area: brand || "pppp",
+      business_area: brand.id || "pppp",
       brand_associate: addtask.brand_associate || "0",
       address_line_1: addtask.address_line_1,
       address_line_2: addtask.address_line_2,
@@ -113,10 +119,10 @@ export default function Add_booking() {
   };
   useEffect(() => {
     getState();
-
+    brandDropdown()
   }, [])
   useEffect(() => {
-
+   
     getCity();
   }, [stateid])
 
@@ -137,23 +143,23 @@ export default function Add_booking() {
     console.log("rescity", rescity.data.data)
     // const getci = await rescity.json();
     setCity(rescity.data.data)
-
   }
   const handleState = (event) => {
     const getstateId = event.target.value;
     console.log("__", getstateId)
     setStateId(getstateId)
+  }
+  const brandDropdown=async()=>{
+    console.log("hiiiiiii")
+    Demo2.FetchBrand(`brand/list`).then((result) => {
+      console.log("result", result)
+      setListdata(result.data);
+   });
 
   }
 
-  let passData = () => {
-    alert("hiii");
-    Demo2.AddData("Products", addtask).then(() => {
-    });
-    // Demo.AddData('Products').then((result)=>{
-    //   console.log("data added")
-    //  })
-    // setaddtask('')
+  let handleBrandAdd = () => {
+    
   };
 
   return (
@@ -165,17 +171,16 @@ export default function Add_booking() {
         </h4>
       </div>
       <form onSubmit={handleSubmit}>
-        <div class="row">
+        <div class="row" style={{dispalye:"flex"}}>
           <div class="col" style={{ display: "flex" }}>
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px",color:"black" }}>
-              {" "}
-              Brand Associate :{" "}
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "10px", marginTop: "29px",color:"black" ,fontSize:"13px"}}>
+             Associate with Brand  ?:
             </StyledFormLabel>
             <div style={{ display: "flex", marginTop: "17px" }}>
               <input name="brand_associate" type="radio" value="0"  onChange={(e) => (handleShowHide(e))} />
-              <label style={{margin:"10px"}}>No</label>
+              <label style={{margin:"10px",fontSize:"13px"}}>No</label>
               <input name="brand_associate" type="radio" value="1" onChange={(e) => (handleShowHide(e))} />
-              <label style={{margin:"10px"}}>yes</label>
+              <label style={{margin:"10px",fontSize:"13px"}}>yes</label>
               {/* <input
                 type="checkbox"
                 id="yes"
@@ -203,62 +208,108 @@ export default function Add_booking() {
               <label for="No" style={{ marginTop: "8px", fontSize: "13px" }}>No</label> */}
             </div>
           </div>
+          </div>
           {showhide === "1" && (
-            <div class="col">
-              <StyledFormLabel htmlFor="country"> Legal Name: </StyledFormLabel>
+       <div class="row">
+            <div class="col" style={{display:"flex"}} >
+              <div>
+             <FormControl variant="outlined" style={{}}>
+              <InputLabel style={{ marginLeft: "-22px", marginTop: "-16px", fontSize: "13px",color:"black" }} > Brand Name :</InputLabel>
+              <Select onChange={(event) => setListdata(event.target.value)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
+                {listdata.map((item) => {
+                  return (<option key={item.id} value={item.id}>{item.name}</option>);
+                })}
+              </Select>
+              <FormHelperText>Select State</FormHelperText>
+            </FormControl>
+              {/* <InputLabel style={{ marginLeft: "-465px", fontSize: "13px",color:"black" ,marginBottom:"-12px"}} > Brand Name :</InputLabel>
+              <Autocomplete 
+                  options={list}
+                  value={listdata}
+                  getOptionLabel={(option) => option.label || ""}
+                  onChange={(e,newValue) =>{
+                  setListdata(newValue)
+                  
+                  }}   
+                  sx={{width:515,marginTop:3}}
+                  renderInput={(params) => <TextField {...params} size="small"/>}
+                />  */}
+           {/* <button
+                type="button"
+                onClick={addDivisionHandler}
+                className="add-btn"
+              >
+             <AddIcon  />
+             </button> */}
+             </div>
+             </div>
+            
+             <div class="col">
+              <StyledFormLabel htmlFor="country" style={{ color:"black" ,fontSize:"13px",marginLeft:"-270px"}}>
+               If your brand is not available then added:
+            </StyledFormLabel>
+            <div style={{display:"flex"}}>
               <input
-              {...register("legal_name")}
                 type="text"
                 class="form-control"
-                placeholder="Enter Name"
-                value={addtask.legal_name}
-                name="legal_name"
+                value={addtask.brand}
+                name="brand"
+                style={{width:"450px"}}
                 onChange={getonChange}
-                required
-              />
+                />
+                <button
+                  type="button"
+                  onClick={handleBrandAdd}
+                  className="add-btn"
+                >
+               <AddIcon  />
+               </button>
+              </div>
+              </div>
             </div>
+            
           )}
           {showhide === "0" && (
             <div class="col">
 
             </div>
           )}
-        </div>
+      
         <div class="row">
           <div class="col">
             <Grid item sx={{ m: 1 }} md={4} xs={12}>
               {/* <Autocomplete option={businesstype} renderInput={(params)=><TextField {...params} />}/> */}
               <div class="col">
-                <FormControl variant="outlined" style={{}}>
-                  <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", fontSize: "13px",color:"black"}} > Business Type:</InputLabel>
-                  <Select onChange={(event) =>
-                    setType(event.target.value)} value={type} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "47px" ,marginBottom:"-45px"}}>
-                    {businesstype.map(item => {
-                      return (<option key={item.value} value={item.value}>{item.text}</option>);
-                    })}
-                  </Select>
-               
-                </FormControl>
-              </div>
+              <InputLabel style={{ marginTop: "10px", marginLeft: "-437px", marginBottom: "10px", fontSize: "13px",color:"black"}} > Business Type:</InputLabel>
+              <Autocomplete options={businesstype}
+                value={type}
+                onChange={(e,newValue) =>{
+                  setType(newValue)
+                  }}   
+                  sx={{width:515,marginLeft:-2.5}}
+                  renderInput={(params) => <TextField {...params} size ="small" />}
+                />
+           </div>
             </Grid>
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginTop: "19px", marginLeft: "-412px" ,color:"black"}}> Legal Name: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginTop: "9px", marginLeft: "-461px" ,color:"black",fontSize:"13px"}}> Legal Name: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
               placeholder="Enter Name"
               value={addtask.legal_name}
               name="legal_name"
+              style={{width:"520px",marginLeft:"-16px"}}
               onChange={getonChange}
               required
             />
           </div>
-          <p>{errors.legal_name?.message}</p>
+     
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-392px" ,color:"black"}}> Permanent Address: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black",fontSize:"13px"}}> Permanent Address: </StyledFormLabel>
             <input
             {...register("address_line_1")}
               type="text"
@@ -267,11 +318,12 @@ export default function Add_booking() {
               value={addtask.address_line_1}
               name="address_line_1"
               onChange={getonChange}
+              style={{marginLeft:"-8px" ,width:"523px"}}
               required
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black"}}> Temporary Address: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-404px" ,color:"black",fontSize:"13px"}}> Temporary Address: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -286,7 +338,7 @@ export default function Add_booking() {
         <div class="row">
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ marginLeft: "-22px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px",color:"black" }} > State :</InputLabel>
+              <InputLabel style={{ marginLeft: "-22px", marginTop: "-16px", fontSize: "13px",color:"black" }} > State :</InputLabel>
               <Select onChange={(event) => handleState(event)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {state.map((item) => {
                   return (<option key={item.id} value={item.id}>{item.name}</option>);
@@ -297,20 +349,19 @@ export default function Add_booking() {
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px",color:"black" }} > City :</InputLabel>
+              <InputLabel style={{ marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px",color:"black" ,marginLeft:"-26px"}} > City :</InputLabel>
               <Select onChange={(e) => setCityId(e.target.value)} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {city.map(item => {
                   //  console.log("firstcity",city)
                   return (<option key={item.id} value={item.id}>{item.city}</option>);
                 })}
               </Select>
-              <FormHelperText>Select City</FormHelperText>
             </FormControl>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> PinCode: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px"}}> Pincode: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -318,24 +369,36 @@ export default function Add_booking() {
               value={addtask.pincode}
               name="pincode"
               onChange={getonChange}
+              style={{marginLeft:"-4px" ,width:"523px"}}
               required
             />
           </div>
           <div class="col">
             <FormControl variant="outlined" style={{}}>
-              <InputLabel style={{  marginLeft: "-20px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" ,color:"black"}} > Business Area: :</InputLabel>
-              <Select onChange={(event) =>
+              <InputLabel style={{  marginLeft: "-31px", marginBottom: "5px", marginTop: "-16px", fontSize: "13px" ,color:"black"}} > Business Area: :</InputLabel>
+              <Autocomplete 
+                  options={houses}
+                  value={brand}
+                  getOptionLabel={(option) => option.text || ""}
+                  onChange={(e,newValue) =>{
+                  setBrand(newValue)
+                  
+                  }}   
+                  sx={{width:515,marginLeft:-2.5,marginTop:3}}
+                  renderInput={(params) => <TextField {...params} size ="small" />}
+                />
+              {/* <Select onChange={(event) =>
                 setBrand(event.target.value)} value={brand} style={{ marginLeft: "-15px", width: "520px", height: "30px", marginTop: "32px" }}>
                 {houses.map(item => {
                   return (<option key={item.value} value={item.value}>{item.text}</option>);
                 })}
-              </Select>
+              </Select> */}
             </FormControl>
           </div>
         </div>
         <div className="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Capacity: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px"}}> Capacity: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -347,13 +410,14 @@ export default function Add_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Email: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px",marginLeft:"-481px"}}> Email: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
               placeholder="email"
               // value={addtask.email}
               name="email"
+
             // onChange={getonChange}
 
             />
@@ -361,7 +425,7 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> Landline No: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px",marginLeft:"-432px"}}> Landline No: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -373,7 +437,7 @@ export default function Add_booking() {
             />
           </div>
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px",color:"black" }}> Mobile Number: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{ marginLeft: "-412px",color:"black" ,fontSize:"13px"}}> Mobile Number: </StyledFormLabel>
             <input
               type="text"
               class="form-control"
@@ -387,7 +451,7 @@ export default function Add_booking() {
         </div>
         <div class="row">
           <div class="col">
-            <StyledFormLabel htmlFor="country" style={{color:"black"}}> GST: </StyledFormLabel>
+            <StyledFormLabel htmlFor="country" style={{color:"black",fontSize:"13px",marginLeft:"-466px"}}> GST: </StyledFormLabel>
             <input
               type="text"
               class="form-control"

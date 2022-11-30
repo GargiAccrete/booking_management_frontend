@@ -1,44 +1,45 @@
-import axios from 'axios'
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
-const AddData = (endpoint,data) =>  {
+
+const AddData = (endpoint, data) => {
     try {
         // console.log(data);
         let options = {
-
-            url : `http://localhost:3002/${endpoint}`,
-            data:data,
-            headers : {
+            url: `http://localhost:3002/${endpoint}`,
+            data: data,
+            headers: {
                 'content-type': 'application/json',
                 'X-Req-Time': '1668509681',
-                'Access-Control-Allow-Origin': '*' 
+                'Access-Control-Allow-Origin': '*'
             },
-            method : 'post'
+            method: 'post'
         }
-        console.log('options',options);
-        return axios(options).then(()=>{
-            console.log("data post" +data)
+        console.log('options', options);
+        return axios(options).then(() => {
+            console.log("data post" + data)
         })
     } catch (error) {
         // console.log(error),'lllllllllllllllll';
     }
-} 
+}
 
-const login = (endpoint,data) =>  {
+const login = (endpoint, data) => {
     try {
         // console.log(data);
         let options = {
 
-            url : `http://localhost:3002/${endpoint}`,
-            data:data,
-            headers : {
+            url: `http://localhost:3002/${endpoint}`,
+            data: data,
+            headers: {
                 'content-type': 'application/json',
                 'X-Req-Time': '1668509681',
-                'Access-Control-Allow-Origin': '*' 
+                'Access-Control-Allow-Origin': '*'
             },
-            method : 'post'
+            method: 'post'
         }
-        return axios(options).then(()=>{
-            console.log("data post" +data)
+        return axios(options).then(() => {
+            console.log("data post" + data)
         })
     } catch (error) {
         // console.log(error),'lllllllllllllllll';
@@ -61,67 +62,109 @@ const login = (endpoint,data) =>  {
 //         return axios(options).then((result)=>{
 //             console.log("first",result.data)
 //            return result.data
-           
+
 //         })
 //     } catch (error) {
 //         // console.log(error),'lllllllllllllllll';
 //     }
 
-   
+
 // }
-const FetchData =(endpoint)=>{
-    return axios.get(`http://localhost:3002/${endpoint}`).then((result)=>{
-        return result.data;
+const FetchData = (endpoint) => {
+    try {
+        let auth = JSON.parse(localStorage.getItem('authToken'))
+        let token = 'Bearer ' + auth;
+        if (auth) {
+            let options = {
+                url: `http://localhost:3002/${endpoint}`,
+                headers: {
+                    'content-type': 'application/json',
+                    'X-Req-Time': '1668509681',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': token
+                },
+                method: 'get'
+            }
+            console.log('options', options);
+            return axios(options).then((result) => {
+                return result.data;
+            })
+        }
+        else {
+            toast("Please login")
+        }
+    }
+    catch (error) {
+        console.log(error, 'lllllllllllllllll');
+    }
+    // return axios.get(`http://localhost:3002/${endpoint}`).then((result) => {
+    //     return result.data;
 
-    })
+    // })
 }
-const PutData = (endpoint,data) =>  {
+const PutData = (endpoint, data) => {
+    let auth = JSON.parse(localStorage.getItem('authToken'))
+    let token = 'Bearer ' + auth;
     try {
-        // console.log(data);
-        let options = {
-       url : `http://localhost:3002/${endpoint}`,
-            data:data,
-            headers : {
-                'content-type': 'application/json',
-                'X-Req-Time': '1668509681',
-                'Access-Control-Allow-Origin': '*' 
-            },
-            method : 'put'
+        if (auth) {
+            // console.log(data);
+            let options = {
+                url: `http://localhost:3002/${endpoint}`,
+                data: data,
+                headers: {
+                    'content-type': 'application/json',
+                    'X-Req-Time': '1668509681',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': token
+                },
+                method: 'put'
+            }
+            return axios(options).then(() => {
+                console.log("data posted", data)
+            })
         }
-        return axios(options).then(()=>{
-            console.log("data posted" ,data)
-        })
+        else {
+            toast("Please login")
+        }
     } catch (error) {
         // console.log(error),'lllllllllllllllll';
     }
-  }
+}
 
 
-const deleteData = (endpoint,id) =>{
-    try {
-        // console.log(data);
-        let options = {
-
-            url : `http://localhost:3002/${endpoint}`,
-            headers : {
-                'content-type': 'application/json',
-                'X-Req-Time': '1668509681',
-                'Access-Control-Allow-Origin': '*' 
-            },
-            method : 'get'
+const deleteData = (endpoint, id) => {
+    let auth = JSON.parse(localStorage.getItem('authToken'))
+    let token = 'Bearer ' + auth;
+try {
+        if (auth) {
+            // console.log(data);
+            let options = {
+                url: `http://localhost:3002/${endpoint}`,
+                headers: {
+                    'content-type': 'application/json',
+                    'X-Req-Time': '1668509681',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': token
+                },
+                method: 'get'
+            }
+            return axios(options).then(() => {
+                console.log("data deleted")
+            })
         }
-        return axios(options).then(()=>{
-            console.log("data deleted")
-        })
-    } catch (error) {
+        else {
+            toast("Please login")
+        }
+    }
+    catch (error) {
         // console.log(error),'lllllllllllllllll';
     }
 
-//     console.log(id)
-//     return axios.delete(`http://localhost:3002/${endpoint}`).then((result)=>{
-//         return result.data;
-//         console.log(result.data)
-// })
+    //     console.log(id)
+    //     return axios.delete(`http://localhost:3002/${endpoint}`).then((result)=>{
+    //         return result.data;
+    //         console.log(result.data)
+    // })
 }
 export default {
     AddData,

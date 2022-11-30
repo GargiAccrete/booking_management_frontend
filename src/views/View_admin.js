@@ -168,7 +168,7 @@ function View_admin() {
       <div>
         <h4>Admin |<small>Admin list</small></h4>
       </div>
-      <Table striped bordered hover style={{ marginLeft: "210px" }}>
+      <Table striped bordered hover style={{ marginLeft: "237px" }}>
         <thead>
           <tr>
             <th>Id</th>
@@ -176,7 +176,7 @@ function View_admin() {
             <th>Email</th>
             <th>Designation</th>
             <th>Is Super Admin</th>
-            <th>Action</th>
+            <th style={{ paddingRight: "167px" }}>Action</th>
           </tr>
         </thead>
         <tbody>

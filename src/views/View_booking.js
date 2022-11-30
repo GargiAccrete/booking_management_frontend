@@ -184,7 +184,7 @@ export default function View_booking() {
       <div>
         <h4>Merchant |<small>Merchant list</small></h4>
       </div>
-      <Table striped bordered hover style={{ marginLeft: "210px" }}>
+      <Table striped bordered hover style={{ marginLeft: "237px" }}>
         <thead>
           <tr>
             <th>Id</th>

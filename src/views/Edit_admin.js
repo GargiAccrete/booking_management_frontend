@@ -6,8 +6,8 @@ import Sidebar from "../components/Sidebar";
 import { styled } from "@mui/material/styles";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { TextField, FormLabel, MenuItem, Grid, } from "@mui/material";
-import { Select,FormHelperText, FormControl, InputLabel } from '@material-ui/core';
+import { TextField, FormLabel, MenuItem, Grid, Autocomplete } from "@mui/material";
+import { Select, FormHelperText, FormControl, InputLabel } from '@material-ui/core';
 
 const StyledTextField = styled(TextField)(() => ({
     marginTop: "3px",
@@ -35,10 +35,11 @@ function Edit_admin() {
         getData();
     }, [])
     const [upadmin, setupAdmin] = useState({});
-    const [designation, setDesignation] = useState([])
+    const [designation, setDesignation] = useState({})
+    const [value, setValue] = useState('');
     const Managerdata = [
-        { value: '1', text: 'Manager ' },
-        { value: '2', text: 'sales Manager' },
+        { label: 'Manager', value: "1" },
+        { label: 'sales Manager', value: "2" },
         // {value: '3',   text: 'Manager2'  },
 
     ];
@@ -50,12 +51,14 @@ function Edit_admin() {
         // console.log(addtask);
     };
     let getData = () => {
+        console.log("hiiii")
         AdminService.FetchData(`adminUser/${allparams.id}/view`).then((result) => {
             console.log("result", result)
             setupAdmin(result.data)
             setDesignation(result.data.designation)
         })
     }
+    console.log("de", designation)
 
     let handleSubmit = (e) => {
         e.preventDefault();
@@ -63,7 +66,7 @@ function Edit_admin() {
             name: upadmin.name,
             email: upadmin.email,
             password: upadmin.password,
-            designation: designation,
+            designation: designation.value,
             is_super_admin: upadmin.is_super_admin,
 
         };
@@ -87,7 +90,7 @@ function Edit_admin() {
                 <div class="row">
                     <div class="col">
                         {/* <Grid item sx={{ m: 1 }} md={5.7} xs={12}> */}
-                        <StyledFormLabel htmlFor="country"> Name: </StyledFormLabel>
+                        <StyledFormLabel htmlFor="country" style={{ fontSize: "13px", color: "black" }}> Name: </StyledFormLabel>
                         <input
                             type="text"
                             class="form-control"
@@ -100,7 +103,7 @@ function Edit_admin() {
                         {/* </Grid> */}
                     </div>
                     <div class="col">
-                        <StyledFormLabel htmlFor="country" >
+                        <StyledFormLabel htmlFor="country" style={{ fontSize: "13px", color: "black" }}>
                             {" "}
                             Email :{" "}
                         </StyledFormLabel>
@@ -111,12 +114,34 @@ function Edit_admin() {
                             value={upadmin.email}
                             name="email"
                             onChange={getonChange}
-
                         />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
+                        <StyledFormLabel htmlFor="country" style={{ fontSize: "13px", color: "black" ,marginLeft:"-433px"}} >
+                            {" "}
+                            Designation :{" "}
+                        </StyledFormLabel>
+                        <Autocomplete
+                            disablePortal
+                            selectOnFocus
+                            select
+                            options={Managerdata}
+                            isOptionEqualToValue={(option, value) => option.label}
+                            // getOptionLabel={(option) => option.text || ""}
+                            // getOptionSelected={(option, value) =>{
+                            //     console.log("first",option)
+                            // }}
+                            value={designation == 1 ? "Manager" : "sales Manager"}
+                            onChange={(e, newValue) => {
+                                setDesignation(newValue)
+                            }}
+                            // clearOnBlur={false}
+                            renderInput={(params) => <TextField {...params} size="small" />}
+                        />
+                    </div>
+                    {/* <div class="col">
                         <FormControl variant="outlined" style={{}}>
                             <InputLabel style={{ color: "black" }} >Designation:</InputLabel>
                             <Select onChange={(event) => setDesignation(event.target.value)} value={designation} style={{ width: "535px", height: "37px", marginTop: "30px" }}>
@@ -126,9 +151,9 @@ function Edit_admin() {
                             </Select>
                             <FormHelperText>Select a Designation</FormHelperText>
                         </FormControl>
-                    </div>
+                    </div> */}
                     <div class="col">
-                        <StyledFormLabel htmlFor="country" style={{ marginLeft: "-449px" }}> Password : </StyledFormLabel>
+                        <StyledFormLabel htmlFor="country" style={{ marginLeft: "-449px", fontSize: "13px", color: "black" }}> Password : </StyledFormLabel>
                         <input
                             type="password"
                             class="form-control"
@@ -141,7 +166,7 @@ function Edit_admin() {
                 </div>
                 <div class="row">
                     <div class="col" style={{ display: "flex" }}>
-                        <StyledFormLabel htmlFor="country" style={{ margin: "33px" }}>
+                        <StyledFormLabel htmlFor="country" style={{ margin: "33px", fontSize: "13px", color: "black" }}>
                             {" "}
                             Is Super Admin? yes/no :{" "}
                         </StyledFormLabel>

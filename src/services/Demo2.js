@@ -88,7 +88,7 @@ const FetchData = (endpoint) => {
         if (auth) {
             let options = {
                 url: `http://localhost:3002/${endpoint}`,
-              headers: {
+                headers: {
                     'content-type': 'application/json',
                     'X-Req-Time': '1668509681',
                     'Access-Control-Allow-Origin': '*',
@@ -98,7 +98,7 @@ const FetchData = (endpoint) => {
             }
             console.log('options', options);
             return axios(options).then((result) => {
-               return result.data;
+                return result.data;
             })
         }
         else {
@@ -114,29 +114,42 @@ const FetchData = (endpoint) => {
     // })
 }
 const FetchCityData = (endpoint) => {
-   
+
     return axios.get(`http://localhost:3002/${endpoint}`).then((result) => {
+        return result.data;
+
+    })
+}
+const FetchBrand = (endpoint) => {
+   return axios.get(`http://localhost:3002/${endpoint}`).then((result) => {
         return result.data;
 
     })
 }
 const PutData = (endpoint, data) => {
     try {
-        // console.log(data);
-        let options = {
-
-            url: `http://localhost:3002/${endpoint}`,
-            data: data,
-            headers: {
-                'content-type': 'application/json',
-                'X-Req-Time': '1668509681',
-                'Access-Control-Allow-Origin': '*'
-            },
-            method: 'put'
+        let auth = JSON.parse(localStorage.getItem('authToken'))
+        let token = 'Bearer ' + auth;
+        if (auth) {
+            // console.log(data);
+            let options = {
+                url: `http://localhost:3002/${endpoint}`,
+                data: data,
+                headers: {
+                    'content-type': 'application/json',
+                    'X-Req-Time': '1668509681',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': token
+                },
+                method: 'put'
+            }
+            return axios(options).then(() => {
+                console.log("data posted", data)
+            })
         }
-        return axios(options).then(() => {
-            console.log("data posted", data)
-        })
+        else {
+            toast("Please login")
+        }
     } catch (error) {
         // console.log(error),'lllllllllllllllll';
     }
@@ -145,20 +158,27 @@ const PutData = (endpoint, data) => {
 
 const deleteData = (endpoint, id) => {
     try {
+        let auth = JSON.parse(localStorage.getItem('authToken'))
+        let token = 'Bearer ' + auth;
         // console.log(data);
-        let options = {
-
-            url: `http://localhost:3002/${endpoint}`,
-            headers: {
-                'content-type': 'application/json',
-                'X-Req-Time': '1668509681',
-                'Access-Control-Allow-Origin': '*'
-            },
-            method: 'get'
+        if (auth) {
+            let options = {
+                url: `http://localhost:3002/${endpoint}`,
+                headers: {
+                    'content-type': 'application/json',
+                    'X-Req-Time': '1668509681',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': token
+                },
+                method: 'get'
+            }
+            return axios(options).then(() => {
+                console.log("data deleted")
+            })
         }
-        return axios(options).then(() => {
-            console.log("data deleted")
-        })
+        else {
+            toast("Please login")
+        }
     } catch (error) {
         // console.log(error),'lllllllllllllllll';
     }
@@ -169,5 +189,6 @@ export default {
     FetchData,
     deleteData,
     login,
-    FetchCityData
+    FetchCityData,
+    FetchBrand
 }
